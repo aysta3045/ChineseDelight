@@ -1,7 +1,5 @@
 {
   "item.chinesedelight.hot_dry_noodles": "热干面",
   "itemGroup.chinesedelight.example_tab": "中式乐事",
-  "item.chinesedelight.hot_dry_noodles.tooltip": "传统的武汉面食",
-  "item.chinesedelight.hot_dry_noodles.tooltip.shift": "按§eSHIFT§r键查看详细信息",
-  "item.chinesedelight.hot_dry_noodles.tooltip.details": "§7配有芝麻酱和腌菜§r"
+  "item.chinesedelight.hot_dry_noodles.tooltip": "配有芝麻酱和腌菜"
 }

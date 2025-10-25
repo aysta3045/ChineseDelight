@@ -34,12 +34,7 @@ public class CommonSetup
     @SubscribeEvent
     public static void addCreative(BuildCreativeModeTabContentsEvent event)
     {
-        // 将物品添加到原版创造标签页
-        if (event.getTabKey() == net.minecraft.world.item.CreativeModeTabs.FOOD_AND_DRINKS) {
-            event.accept(ModItems.HOT_DRY_NOODLES.get());
-        }
-
-        // 添加到自定义标签页
+        // 添加到中式乐事标签页
         if (event.getTabKey() == ModCreativeTabs.CHINESE_DELIGHT_TAB.getKey()) {
             event.accept(ModItems.HOT_DRY_NOODLES.get());
         }
