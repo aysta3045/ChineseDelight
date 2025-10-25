@@ -30,10 +30,10 @@ public class ModItems
                 public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
                     super.appendHoverText(stack, level, tooltip, flag);
 
-                    // 基础工具提示
+                    // shift基础工具提示
                     tooltip.add(Component.translatable("item.chinesedelight.hot_dry_noodles.tooltip"));
 
-                    // 如果按住Shift显示详细信息
+
                     if (net.minecraft.client.gui.screens.Screen.hasShiftDown()) {
                         tooltip.add(Component.translatable("item.chinesedelight.hot_dry_noodles.tooltip.details"));
                     } else {

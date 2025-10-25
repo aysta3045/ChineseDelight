@@ -12,12 +12,12 @@ public class ModCreativeTabs
 {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ChineseDelight.MODID);
 
-    public static final RegistryObject<CreativeModeTab> EXAMPLE_TAB = CREATIVE_TABS.register("example_tab",
+    public static final RegistryObject<CreativeModeTab> CHINESE_DELIGHT_TAB = CREATIVE_TABS.register("example_tab",
             () -> CreativeModeTab.builder()
                     .withTabsBefore(CreativeModeTabs.COMBAT)
                     .title(Component.translatable("itemGroup." + ChineseDelight.MODID + ".example_tab"))
-                    .icon(() -> ModItems.HOT_DRY_NOODLES.get().getDefaultInstance())  // 使用热干面作为标签页图标
+                    .icon(() -> ModItems.HOT_DRY_NOODLES.get().getDefaultInstance())
                     .displayItems((parameters, output) -> {
-                        output.accept(ModItems.HOT_DRY_NOODLES.get());  // 只显示热干面
+                        output.accept(ModItems.HOT_DRY_NOODLES.get());
                     }).build());
 }
