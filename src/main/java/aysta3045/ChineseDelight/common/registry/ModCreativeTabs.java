@@ -1,6 +1,6 @@
-package aysta.ChineseDelight.common.registry;
+package aysta3045.ChineseDelight.common.registry;
 
-import aysta.ChineseDelight.ChineseDelight;
+import aysta3045.ChineseDelight.ChineseDelight;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;

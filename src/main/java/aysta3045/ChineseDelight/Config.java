@@ -1,4 +1,4 @@
-package aysta.ChineseDelight;
+package aysta3045.ChineseDelight;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;

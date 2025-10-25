@@ -1,7 +1,7 @@
-package aysta.ChineseDelight;
+package aysta3045.ChineseDelight;
 
-import aysta.ChineseDelight.common.registry.ModCreativeTabs;
-import aysta.ChineseDelight.common.registry.ModItems;
+import aysta3045.ChineseDelight.common.registry.ModCreativeTabs;
+import aysta3045.ChineseDelight.common.registry.ModItems;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -11,9 +11,9 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
-import aysta.ChineseDelight.client.ClientSetup;
-import aysta.ChineseDelight.common.CommonSetup;
-import aysta.ChineseDelight.common.registry.*;
+import aysta3045.ChineseDelight.client.ClientSetup;
+import aysta3045.ChineseDelight.common.CommonSetup;
+import aysta3045.ChineseDelight.common.registry.*;
 
 @Mod(ChineseDelight.MODID)
 public class ChineseDelight
