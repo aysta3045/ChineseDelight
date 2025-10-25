@@ -3,6 +3,7 @@ package com.aysta.ChineseDelight.common.items;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.food.FoodProperties;
@@ -14,12 +15,16 @@ public class HotDryNoodlesItem extends Item
 {
     // 定义食物属性
     private static final FoodProperties FOOD_PROPERTIES = new FoodProperties.Builder()
-            .nutrition(8)
-            .saturationMod(0.8f)
+            .nutrition(6)
+            .saturationMod(8f)
             .build();
 
     public HotDryNoodlesItem() {
-        super(new Item.Properties().food(FOOD_PROPERTIES));
+        super(new Item.Properties()
+                .food(FOOD_PROPERTIES)
+                .rarity(Rarity.RARE)
+                .stacksTo(16)
+        );
     }
 
     @Override
