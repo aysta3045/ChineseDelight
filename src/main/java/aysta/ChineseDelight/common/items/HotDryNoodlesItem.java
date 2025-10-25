@@ -1,4 +1,4 @@
-package com.aysta.ChineseDelight.common.items;
+package aysta.ChineseDelight.common.items;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;

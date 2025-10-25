@@ -1,6 +1,6 @@
-package com.aysta.ChineseDelight.client;
+package aysta.ChineseDelight.client;
 
-import com.aysta.ChineseDelight.ChineseDelight;
+import aysta.ChineseDelight.ChineseDelight;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;

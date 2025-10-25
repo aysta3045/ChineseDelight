@@ -1,9 +1,9 @@
-package com.aysta.ChineseDelight.common;
+package aysta.ChineseDelight.common;
 
-import com.aysta.ChineseDelight.ChineseDelight;
-import com.aysta.ChineseDelight.Config;
-import com.aysta.ChineseDelight.common.registry.ModItems;
-import com.aysta.ChineseDelight.common.registry.ModCreativeTabs;
+import aysta.ChineseDelight.ChineseDelight;
+import aysta.ChineseDelight.Config;
+import aysta.ChineseDelight.common.registry.ModItems;
+import aysta.ChineseDelight.common.registry.ModCreativeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;

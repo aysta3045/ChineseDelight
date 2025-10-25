@@ -1,7 +1,8 @@
-package com.aysta.ChineseDelight.common.registry;
+package aysta.ChineseDelight.common.registry;
 
-import com.aysta.ChineseDelight.ChineseDelight;
-import com.aysta.ChineseDelight.common.items.*;
+import aysta.ChineseDelight.ChineseDelight;
+import aysta.ChineseDelight.common.items.HotDryNoodlesItem;
+import aysta.ChineseDelight.common.items.*;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
