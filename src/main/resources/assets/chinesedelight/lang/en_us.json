@@ -1,6 +1,5 @@
 {
-  "itemGroup.chinesedelight.chinesedelight_tab": "Chinese Delight",
-
   "item.chinesedelight.hot_dry_noodles": "Hot Dry Noodles",
-  "item.chinesedelight.hot_dry_noodles.description": "Served with sesame paste and pickled vegetables"
+  "item.chinesedelight.hot_dry_noodles.description": "Served with sesame paste and pickled vegetables",
+  "itemGroup.chinesedelight.chinesedelight_tab": "Chinese Delight"
 }
