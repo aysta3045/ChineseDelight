@@ -11,15 +11,15 @@ import net.minecraft.world.food.FoodProperties;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class HotDryNoodlesItem extends Item
+public class ALargeBottleOfIcedBlackTeaItem extends Item
 {
     // 定义食物属性
     private static final FoodProperties FOOD_PROPERTIES = new FoodProperties.Builder()
-            .nutrition(6) // 饱食度
-            .saturationMod(8f) // 饱和度
+            .nutrition(2) // 饱食度
+            .saturationMod(2.4f) // 饱和度
             .build();
 
-    public HotDryNoodlesItem() {
+    public ALargeBottleOfIcedBlackTeaItem() {
         super(new Item.Properties()
                 .food(FOOD_PROPERTIES)
                 .rarity(Rarity.RARE)
@@ -31,6 +31,6 @@ public class HotDryNoodlesItem extends Item
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        tooltip.add(Component.translatable("item.chinesedelight.hot_dry_noodles.description"));
+        tooltip.add(Component.translatable("item.chinesedelight.a_large_bottle_of_iced_black_tea.description"));
     }
 }

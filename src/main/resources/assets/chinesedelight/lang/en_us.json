@@ -1,5 +1,9 @@
 {
-  "item.chinesedelight.hot_dry_noodles": "Hot Dry Noodles",
   "itemGroup.chinesedelight.chinesedelight_tab": "Chinese Delight",
-  "item.chinesedelight.hot_dry_noodles.tooltip": "Served with sesame paste and pickled vegetables"
+
+  "item.chinesedelight.hot_dry_noodles": "Hot Dry Noodles",
+  "item.chinesedelight.hot_dry_noodles.description": "Served with sesame paste and pickled vegetables",
+
+  "item.chinesedelight.a_large_bottle_of_iced_black_tea": "A Large Bottle Of Iced Black Tea Item",
+  "item.chinesedelight.a_large_bottle_of_iced_black_tea.description": "Manba out!"
 }
