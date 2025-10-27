@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "chinesedelight:sesame_spike"
+    }
+  ],
+  "result": {
+    "item": "chinesedelight:sesame",
+    "count": 3
+  }
+}

@@ -1,6 +1,5 @@
 package aysta3045.ChineseDelight.common.blocks;
 
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -11,27 +10,29 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Item;
 import net.minecraft.util.RandomSource;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 import aysta3045.ChineseDelight.common.registry.ModItems;
 
-import javax.annotation.Nullable;
-
 public class SesameCropBlock extends CropBlock {
-    public static final int MAX_AGE = 3;
-    public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
+    // 与小麦一致，使用 AGE_7 表示 8 个生长阶段（0-7）
+    public static final int MAX_AGE = 7;
+    public static final IntegerProperty AGE = BlockStateProperties.AGE_7;
 
+    // 使用与小麦相同的碰撞箱
     private static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
+            Block.box(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D),
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D),
+            Block.box(0.0D, 0.0D, 0.0D, 16.0D, 5.0D, 16.0D),
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
-            Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D)
+            Block.box(0.0D, 0.0D, 0.0D, 16.0D, 7.0D, 16.0D),
+            Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D),
+            Block.box(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D)
     };
 
     public SesameCropBlock(Properties properties) {
@@ -54,8 +55,8 @@ public class SesameCropBlock extends CropBlock {
     }
 
     @Override
-    protected ItemLike getBaseSeedId() {
-        return ModItems.SESAME_SEEDS.get();
+    protected Item getBaseSeedId() {
+        return ModItems.SESAME.get();
     }
 
     @Override
@@ -72,7 +73,6 @@ public class SesameCropBlock extends CropBlock {
         }
     }
 
-    @Override
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
         return !this.isMaxAge(state);
     }
@@ -97,19 +97,8 @@ public class SesameCropBlock extends CropBlock {
         return SHAPE_BY_AGE[state.getValue(this.getAgeProperty())];
     }
 
-    // 使用playerDestroy来处理玩家破坏时的额外掉落
-    @Override
-    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
-        super.playerDestroy(level, player, pos, state, blockEntity, tool);
-        if (this.isMaxAge(state)) {
-            // 掉落1-3个芝麻穗
-            int count = 1 + level.random.nextInt(3);
-            popResource(level, pos, new ItemStack(ModItems.SESAME_SPIKE.get(), count));
-        }
-    }
-
     // 获取骨粉增加的年龄
     protected int getBonemealAgeIncrease(Level level) {
-        return level.random.nextInt(2) + 1;
+        return level.random.nextInt(3) + 1; // 骨粉可以增加1-3个生长阶段
     }
 }

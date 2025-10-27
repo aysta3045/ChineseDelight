@@ -2,7 +2,6 @@ package aysta3045.ChineseDelight.common.registry;
 
 import aysta3045.ChineseDelight.ChineseDelight;
 import aysta3045.ChineseDelight.common.items.*;
-import aysta3045.ChineseDelight.common.blocks.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
@@ -19,8 +18,8 @@ public class ModItems
             HotDryNoodlesItem::new);
 
     // 芝麻
-    public static final RegistryObject<Item> SESAME_SEEDS = ITEMS.register("sesame_seeds",
-            () -> new SesameSeedsItem(ModBlocks.SESAME_CROP.get(), new Item.Properties()));
+    public static final RegistryObject<Item> SESAME = ITEMS.register("sesame",
+            () -> new SesameItem(ModBlocks.SESAME_CROP.get(), new Item.Properties()));
 
     // 芝麻穗
     public static final RegistryObject<Item> SESAME_SPIKE = ITEMS.register("sesame_spike",
