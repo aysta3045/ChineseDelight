@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "chinesedelight:block/sesame_bale_top",
+    "bottom": "chinesedelight:block/sesame_bale_bottom",
+    "side": "chinesedelight:block/sesame_bale_side"
+  }
+}

@@ -33,6 +33,7 @@ public class ChineseDelight
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         ModItems.ITEMS.register(modEventBus);
+        ModBlocks.BLOCKS.register(modEventBus);
         ModCreativeTabs.CREATIVE_TABS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
