@@ -28,4 +28,12 @@ public class ModItems
     // 一捆芝麻穗
     public static final RegistryObject<Item> SESAME_BALE = ITEMS.register("sesame_bale",
             () -> new BlockItem(ModBlocks.SESAME_BALE.get(), new Item.Properties()));
+
+    // 牛油
+    public static final RegistryObject<Item> BEEF_TALLOW = ITEMS.register("beef_tallow",
+            () -> new BeefTallowItem(new Item.Properties()));
+
+    // 烹饪锅
+    public static final RegistryObject<Item> CHINESE_COOKING_POT = ITEMS.register("chinese_cooking_pot",
+            () -> new BlockItem(ModBlocks.CHINESE_COOKING_POT.get(), new Item.Properties()));
 }

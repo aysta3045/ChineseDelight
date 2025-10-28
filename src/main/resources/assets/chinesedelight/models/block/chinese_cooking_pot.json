@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "chinesedelight:block/chinese_cooking_pot_front",
+    "down": "chinesedelight:block/chinese_cooking_pot_bottom",
+    "up": "chinesedelight:block/chinese_cooking_pot_top",
+    "north": "chinesedelight:block/chinese_cooking_pot_front",
+    "east": "chinesedelight:block/chinese_cooking_pot_side",
+    "south": "chinesedelight:block/chinese_cooking_pot_side",
+    "west": "chinesedelight:block/chinese_cooking_pot_side"
+  }
+}

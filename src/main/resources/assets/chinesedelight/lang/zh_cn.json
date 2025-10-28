@@ -6,5 +6,10 @@
   "item.chinesedelight.sesame_bale": "一捆芝麻穗",
   "item.chinesedelight.sesame": "芝麻",
   "item.chinesedelight.sesame_spike": "芝麻穗",
-  "itemGroup.chinesedelight.chinesedelight_tab": "中式乐事"
+  "itemGroup.chinesedelight.chinesedelight_tab": "中式乐事",
+  "item.chinesedelight.beef_tallow": "牛油",
+  "item.chinesedelight.beef_tallow.description": "§7熬制的牛脂肪，用于烹饪",
+  "block.chinesedelight.chinese_cooking_pot": "中式烹饪锅",
+  "container.chinesedelight.chinese_cooking_pot": "中式烹饪锅",
+  "item.chinesedelight.chinese_cooking_pot": "中式烹饪锅"
 }
