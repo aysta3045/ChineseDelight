@@ -1,15 +1,15 @@
 {
+  "block.chinesedelight.oil_cooking_pot": "熬油锅",
   "block.chinesedelight.sesame_bale": "一捆芝麻穗",
   "block.chinesedelight.sesame_crop": "芝麻植株",
-  "item.chinesedelight.hot_dry_noodles": "热干面",
-  "item.chinesedelight.hot_dry_noodles.description": "配有芝麻酱和腌菜",
-  "item.chinesedelight.sesame_bale": "一捆芝麻穗",
-  "item.chinesedelight.sesame": "芝麻",
-  "item.chinesedelight.sesame_spike": "芝麻穗",
-  "itemGroup.chinesedelight.chinesedelight_tab": "中式乐事",
+  "container.chinese_delight.oil_cooking_pot": "熬油锅",
   "item.chinesedelight.beef_tallow": "牛油",
   "item.chinesedelight.beef_tallow.description": "§7熬制的牛脂肪，用于烹饪",
-  "block.chinesedelight.chinese_cooking_pot": "中式烹饪锅",
-  "container.chinesedelight.chinese_cooking_pot": "中式烹饪锅",
-  "item.chinesedelight.chinese_cooking_pot": "中式烹饪锅"
+  "item.chinesedelight.oil_cooking_pot": "熬油锅",
+  "item.chinesedelight.hot_dry_noodles": "热干面",
+  "item.chinesedelight.hot_dry_noodles.description": "配有芝麻酱和腌菜",
+  "item.chinesedelight.sesame": "芝麻",
+  "item.chinesedelight.sesame_bale": "一捆芝麻穗",
+  "item.chinesedelight.sesame_spike": "芝麻穗",
+  "itemGroup.chinesedelight.chinesedelight_tab": "中式乐事"
 }

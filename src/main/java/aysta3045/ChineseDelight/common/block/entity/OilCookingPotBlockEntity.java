@@ -1,8 +1,7 @@
 package aysta3045.ChineseDelight.common.block.entity;
 
-import aysta3045.ChineseDelight.ChineseDelight;
-import aysta3045.ChineseDelight.common.menu.ChineseCookingPotMenu;
-import aysta3045.ChineseDelight.common.recipe.ChineseCookingPotRecipe;
+import aysta3045.ChineseDelight.common.menu.OilCookingPotMenu;
+import aysta3045.ChineseDelight.common.recipe.OilCookingPotRecipe;
 import aysta3045.ChineseDelight.common.registry.ModBlockEntities;
 import aysta3045.ChineseDelight.common.registry.ModRecipes;
 import net.minecraft.core.BlockPos;
@@ -35,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuProvider {
+public class OilCookingPotBlockEntity extends BlockEntity implements MenuProvider {
     // 槽位定义
     public static final int FUEL_SLOT = 0;
     public static final int INPUT_SLOT = 1;
@@ -83,16 +82,16 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
     private int fuelTime = 0;
     private int fuelDuration = 0;
 
-    public ChineseCookingPotBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.CHINESE_COOKING_POT.get(), pos, state);
+    public OilCookingPotBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.OIL_COOKING_POT.get(), pos, state);
         this.data = new ContainerData() {
             @Override
             public int get(int index) {
                 return switch (index) {
-                    case DATA_COOKING_PROGRESS -> ChineseCookingPotBlockEntity.this.cookingProgress;
-                    case DATA_COOKING_TIME -> ChineseCookingPotBlockEntity.this.cookingTime;
-                    case DATA_FUEL_TIME -> ChineseCookingPotBlockEntity.this.fuelTime;
-                    case DATA_FUEL_DURATION -> ChineseCookingPotBlockEntity.this.fuelDuration;
+                    case DATA_COOKING_PROGRESS -> OilCookingPotBlockEntity.this.cookingProgress;
+                    case DATA_COOKING_TIME -> OilCookingPotBlockEntity.this.cookingTime;
+                    case DATA_FUEL_TIME -> OilCookingPotBlockEntity.this.fuelTime;
+                    case DATA_FUEL_DURATION -> OilCookingPotBlockEntity.this.fuelDuration;
                     default -> 0;
                 };
             }
@@ -100,10 +99,10 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
             @Override
             public void set(int index, int value) {
                 switch (index) {
-                    case DATA_COOKING_PROGRESS -> ChineseCookingPotBlockEntity.this.cookingProgress = value;
-                    case DATA_COOKING_TIME -> ChineseCookingPotBlockEntity.this.cookingTime = value;
-                    case DATA_FUEL_TIME -> ChineseCookingPotBlockEntity.this.fuelTime = value;
-                    case DATA_FUEL_DURATION -> ChineseCookingPotBlockEntity.this.fuelDuration = value;
+                    case DATA_COOKING_PROGRESS -> OilCookingPotBlockEntity.this.cookingProgress = value;
+                    case DATA_COOKING_TIME -> OilCookingPotBlockEntity.this.cookingTime = value;
+                    case DATA_FUEL_TIME -> OilCookingPotBlockEntity.this.fuelTime = value;
+                    case DATA_FUEL_DURATION -> OilCookingPotBlockEntity.this.fuelDuration = value;
                 }
             }
 
@@ -136,17 +135,17 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("container.chinese_delight.chinese_cooking_pot");
+        return Component.translatable("container.chinese_delight.oil_cooking_pot");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-        return new ChineseCookingPotMenu(containerId, playerInventory, this, this.data);
+        return new OilCookingPotMenu(containerId, playerInventory, this, this.data);
     }
 
     // 主 tick 方法
-    public static void tick(Level level, BlockPos pos, BlockState state, ChineseCookingPotBlockEntity blockEntity) {
+    public static void tick(Level level, BlockPos pos, BlockState state, OilCookingPotBlockEntity blockEntity) {
         if (level.isClientSide) {
             return;
         }
@@ -165,14 +164,12 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
 
             if (!wasLit) {
                 level.setBlock(pos, state.setValue(AbstractFurnaceBlock.LIT, true), 3);
-                ChineseDelight.LOGGER.info("Block lit: fuelTime = {}", blockEntity.fuelTime);
             }
         } else {
             // 燃料耗尽
             if (wasLit) {
                 hasChanged = true;
                 level.setBlock(pos, state.setValue(AbstractFurnaceBlock.LIT, false), 3);
-                ChineseDelight.LOGGER.info("Block unlit: no fuel");
             }
 
             // 尝试消耗新燃料
@@ -182,7 +179,6 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
 
                 if (!wasLit) {
                     level.setBlock(pos, state.setValue(AbstractFurnaceBlock.LIT, true), 3);
-                    ChineseDelight.LOGGER.info("Block lit by new fuel");
                 }
             }
         }
@@ -192,18 +188,15 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
             blockEntity.cookingProgress++;
             hasChanged = true;
 
-            ChineseDelight.LOGGER.debug("Cooking progress: {}/{}", blockEntity.cookingProgress, blockEntity.cookingTime);
 
             if (blockEntity.cookingProgress >= blockEntity.cookingTime) {
                 blockEntity.performCooking();
                 blockEntity.cookingProgress = 0;
-                ChineseDelight.LOGGER.info("Cooking completed, reset progress");
             }
         } else if (blockEntity.cookingProgress > 0) {
             // 没有燃料或没有有效配方时，重置进度
             blockEntity.cookingProgress = 0;
             hasChanged = true;
-            ChineseDelight.LOGGER.debug("Reset cooking progress due to lack of fuel or recipe");
         }
 
         if (hasChanged) {
@@ -219,12 +212,12 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
         }
 
         // 获取当前配方
-        Optional<ChineseCookingPotRecipe> recipe = getCurrentRecipe();
+        Optional<OilCookingPotRecipe> recipe = getCurrentRecipe();
         if (recipe.isEmpty()) {
             return false;
         }
 
-        ChineseCookingPotRecipe currentRecipe = recipe.get();
+        OilCookingPotRecipe currentRecipe = recipe.get();
 
         // 更新烹饪时间为配方指定时间
         cookingTime = currentRecipe.getCookingTime();
@@ -236,7 +229,6 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
         boolean canOutput1 = canInsertItem(OUTPUT_SLOT_1, result1);
         boolean canOutput2 = result2.isEmpty() || canInsertItem(OUTPUT_SLOT_2, result2);
 
-        ChineseDelight.LOGGER.debug("Recipe check - Can output1: {}, Can output2: {}", canOutput1, canOutput2);
 
         return canOutput1 && canOutput2;
     }
@@ -251,18 +243,16 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
 
     // 执行烹饪操作
     private void performCooking() {
-        Optional<ChineseCookingPotRecipe> recipe = getCurrentRecipe();
+        Optional<OilCookingPotRecipe> recipe = getCurrentRecipe();
         if (recipe.isEmpty()) {
-            ChineseDelight.LOGGER.warn("No recipe found for cooking");
             return;
         }
 
-        ChineseCookingPotRecipe currentRecipe = recipe.get();
+        OilCookingPotRecipe currentRecipe = recipe.get();
         ItemStack input = itemHandler.getStackInSlot(INPUT_SLOT);
 
         // 检查输入物品是否足够
         if (input.isEmpty() || input.getCount() < 1) {
-            ChineseDelight.LOGGER.warn("Input item is empty or insufficient");
             return;
         }
 
@@ -290,16 +280,11 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
                 output2.grow(result2.getCount());
             }
         }
-
-        ChineseDelight.LOGGER.info("Cooking completed - Output1: {}, Output2: {}",
-                result1.getItem().getDescriptionId(),
-                result2.isEmpty() ? "none" : result2.getItem().getDescriptionId());
     }
 
     // 获取当前配方
-    private Optional<ChineseCookingPotRecipe> getCurrentRecipe() {
+    private Optional<OilCookingPotRecipe> getCurrentRecipe() {
         if (level == null) {
-            ChineseDelight.LOGGER.debug("Level is null");
             return Optional.empty();
         }
 
@@ -316,21 +301,17 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
         RecipeManager recipeManager = level.getRecipeManager();
 
         // 使用 getAllRecipesFor 获取所有配方并手动匹配
-        var recipes = recipeManager.getAllRecipesFor(ModRecipes.CHINESE_COOKING_TYPE.get());
+        var recipes = recipeManager.getAllRecipesFor(ModRecipes.OIL_COOKING_TYPE.get());
 
-        ChineseDelight.LOGGER.debug("Found {} Chinese cooking recipes", recipes.size());
 
         for (var recipe : recipes) {
-            ChineseDelight.LOGGER.debug("Checking recipe: {} with input requirement: {}",
-                    recipe.getId(), recipe.getIngredient().getItems()[0].getItem().getDescriptionId());
+
 
             if (recipe.matches(inventory, level)) {
-                ChineseDelight.LOGGER.debug("Recipe matched: {}", recipe.getId());
                 return Optional.of(recipe);
             }
         }
 
-        ChineseDelight.LOGGER.debug("No recipe matched for input: {}", input.getItem().getDescriptionId());
         return Optional.empty();
     }
 
@@ -338,13 +319,10 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
     private boolean hasFuel() {
         ItemStack fuelStack = itemHandler.getStackInSlot(FUEL_SLOT);
         if (fuelStack.isEmpty()) {
-            ChineseDelight.LOGGER.debug("No fuel in slot");
             return false;
         }
 
         int burnTime = getBurnDuration(fuelStack);
-        ChineseDelight.LOGGER.debug("Fuel stack: {}, Burn time: {}",
-                fuelStack.getItem().getDescriptionId(), burnTime);
 
         return burnTime > 0;
     }
@@ -368,7 +346,6 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
                 fuelStack.shrink(1);
             }
 
-            ChineseDelight.LOGGER.info("Fuel consumed, remaining fuel time: {}", fuelTime);
         }
     }
 
@@ -420,7 +397,9 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         super.onDataPacket(net, pkt);
-        load(pkt.getTag());
+        if (pkt.getTag() != null) {
+            load(pkt.getTag());
+        }
     }
 
     // 物品掉落方法
@@ -465,21 +444,5 @@ public class ChineseCookingPotBlockEntity extends BlockEntity implements MenuPro
             }
         }
         return (int) Math.floor((filledSlots * 15.0f) / itemHandler.getSlots());
-    }
-
-    // 调试方法
-    public void debugInfo() {
-        ChineseDelight.LOGGER.info("=== Chinese Cooking Pot Debug Info ===");
-        ChineseDelight.LOGGER.info("Fuel Time: {}/{}", fuelTime, fuelDuration);
-        ChineseDelight.LOGGER.info("Cooking Progress: {}/{}", cookingProgress, cookingTime);
-        ChineseDelight.LOGGER.info("Is Burning: {}", isBurning());
-
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            ItemStack stack = itemHandler.getStackInSlot(i);
-            ChineseDelight.LOGGER.info("Slot {}: {} x{}", i,
-                    stack.getItem().getDescriptionId(), stack.getCount());
-        }
-
-        ChineseDelight.LOGGER.info("=== End Debug Info ===");
     }
 }

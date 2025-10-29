@@ -1,6 +1,6 @@
 package aysta3045.ChineseDelight.common.menu;
 
-import aysta3045.ChineseDelight.common.block.entity.ChineseCookingPotBlockEntity;
+import aysta3045.ChineseDelight.common.block.entity.OilCookingPotBlockEntity;
 import aysta3045.ChineseDelight.common.registry.ModBlocks;
 import aysta3045.ChineseDelight.common.registry.ModMenus;
 import net.minecraft.core.BlockPos;
@@ -17,9 +17,9 @@ import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ChineseCookingPotMenu extends AbstractContainerMenu {
+public class OilCookingPotMenu extends AbstractContainerMenu {
     @Nullable
-    public final ChineseCookingPotBlockEntity blockEntity;
+    public final OilCookingPotBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
@@ -30,7 +30,7 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
     private static final int INPUT_SLOT_Y = 17;
     private static final int OUTPUT_SLOT_1_X = 116;
     private static final int OUTPUT_SLOT_1_Y = 35;
-    private static final int OUTPUT_SLOT_2_X = 134;
+    private static final int OUTPUT_SLOT_2_X = 146;
     private static final int OUTPUT_SLOT_2_Y = 35;
 
     // 玩家物品栏位置
@@ -49,17 +49,17 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
     private static final int PLAYER_HOTBAR_START_INDEX = PLAYER_INVENTORY_START_INDEX + PLAYER_INVENTORY_SLOT_COUNT;
     private static final int PLAYER_INVENTORY_END_INDEX = PLAYER_HOTBAR_START_INDEX + PLAYER_HOTBAR_SLOT_COUNT;
 
-    public ChineseCookingPotMenu(int containerId, Inventory playerInventory, FriendlyByteBuf extraData) {
+    public OilCookingPotMenu(int containerId, Inventory playerInventory, FriendlyByteBuf extraData) {
         this(containerId, playerInventory,
                 getBlockEntityFromBuffer(playerInventory, extraData),
                 createContainerData());
     }
 
-    public ChineseCookingPotMenu(int containerId, Inventory playerInventory, @Nullable BlockEntity blockEntity, ContainerData data) {
-        super(ModMenus.CHINESE_COOKING_POT_MENU.get(), containerId);
+    public OilCookingPotMenu(int containerId, Inventory playerInventory, @Nullable BlockEntity blockEntity, ContainerData data) {
+        super(ModMenus.OIL_COOKING_POT_MENU.get(), containerId);
 
-        this.blockEntity = (blockEntity instanceof ChineseCookingPotBlockEntity) ?
-                (ChineseCookingPotBlockEntity) blockEntity : null;
+        this.blockEntity = (blockEntity instanceof OilCookingPotBlockEntity) ?
+                (OilCookingPotBlockEntity) blockEntity : null;
         this.level = playerInventory.player.level();
         this.data = data;
 
@@ -76,39 +76,7 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
         addDataSlots(data);
     }
 
-    public boolean isBurning() {
-        // 检查是否在燃烧（燃料时间 > 0）
-        return data.get(ChineseCookingPotBlockEntity.DATA_FUEL_TIME) > 0;
-    }
 
-    public boolean isCooking() {
-        // 检查是否在烹饪（进度 > 0）
-        return data.get(ChineseCookingPotBlockEntity.DATA_COOKING_PROGRESS) > 0;
-    }
-
-    public int getScaledFuel() {
-        int fuelTime = data.get(ChineseCookingPotBlockEntity.DATA_FUEL_TIME);
-        int fuelDuration = data.get(ChineseCookingPotBlockEntity.DATA_FUEL_DURATION);
-
-        if (fuelDuration == 0) {
-            fuelDuration = 200; // 默认值
-        }
-
-        // 返回燃料进度的像素高度（最大13像素）
-        return fuelTime * 13 / fuelDuration;
-    }
-
-    public int getScaledProgress() {
-        int progress = data.get(ChineseCookingPotBlockEntity.DATA_COOKING_PROGRESS);
-        int cookingTime = data.get(ChineseCookingPotBlockEntity.DATA_COOKING_TIME);
-
-        if (cookingTime == 0) {
-            cookingTime = 200; // 默认值
-        }
-
-        // 返回烹饪进度的像素宽度（最大24像素）
-        return progress * 24 / cookingTime;
-    }
     @Nullable
     private static BlockEntity getBlockEntityFromBuffer(Inventory playerInventory, @Nullable FriendlyByteBuf extraData) {
         if (extraData == null) {
@@ -150,7 +118,7 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
 
         blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             // 燃料槽 - 只接受燃料物品
-            this.addSlot(new SlotItemHandler(handler, ChineseCookingPotBlockEntity.FUEL_SLOT, FUEL_SLOT_X, FUEL_SLOT_Y) {
+            this.addSlot(new SlotItemHandler(handler, OilCookingPotBlockEntity.FUEL_SLOT, FUEL_SLOT_X, FUEL_SLOT_Y) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     return isFuel(stack);
@@ -163,7 +131,7 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
             });
 
             // 输入槽
-            this.addSlot(new SlotItemHandler(handler, ChineseCookingPotBlockEntity.INPUT_SLOT, INPUT_SLOT_X, INPUT_SLOT_Y) {
+            this.addSlot(new SlotItemHandler(handler, OilCookingPotBlockEntity.INPUT_SLOT, INPUT_SLOT_X, INPUT_SLOT_Y) {
                 @Override
                 public int getMaxStackSize() {
                     return 64;
@@ -171,7 +139,7 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
             });
 
             // 输出槽1 - 不接受输入
-            this.addSlot(new SlotItemHandler(handler, ChineseCookingPotBlockEntity.OUTPUT_SLOT_1, OUTPUT_SLOT_1_X, OUTPUT_SLOT_1_Y) {
+            this.addSlot(new SlotItemHandler(handler, OilCookingPotBlockEntity.OUTPUT_SLOT_1, OUTPUT_SLOT_1_X, OUTPUT_SLOT_1_Y) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     return false;
@@ -190,7 +158,7 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
             });
 
             // 输出槽2 - 不接受输入
-            this.addSlot(new SlotItemHandler(handler, ChineseCookingPotBlockEntity.OUTPUT_SLOT_2, OUTPUT_SLOT_2_X, OUTPUT_SLOT_2_Y) {
+            this.addSlot(new SlotItemHandler(handler, OilCookingPotBlockEntity.OUTPUT_SLOT_2, OUTPUT_SLOT_2_X, OUTPUT_SLOT_2_Y) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     return false;
@@ -215,7 +183,7 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
         SimpleContainer dummyContainer = new SimpleContainer(MACHINE_SLOT_COUNT);
 
         // 燃料槽
-        this.addSlot(new Slot(dummyContainer, ChineseCookingPotBlockEntity.FUEL_SLOT, FUEL_SLOT_X, FUEL_SLOT_Y) {
+        this.addSlot(new Slot(dummyContainer, OilCookingPotBlockEntity.FUEL_SLOT, FUEL_SLOT_X, FUEL_SLOT_Y) {
             @Override
             public boolean mayPlace(@NotNull ItemStack stack) {
                 return false;
@@ -223,7 +191,7 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
         });
 
         // 输入槽
-        this.addSlot(new Slot(dummyContainer, ChineseCookingPotBlockEntity.INPUT_SLOT, INPUT_SLOT_X, INPUT_SLOT_Y) {
+        this.addSlot(new Slot(dummyContainer, OilCookingPotBlockEntity.INPUT_SLOT, INPUT_SLOT_X, INPUT_SLOT_Y) {
             @Override
             public boolean mayPlace(@NotNull ItemStack stack) {
                 return false;
@@ -231,7 +199,7 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
         });
 
         // 输出槽1
-        this.addSlot(new Slot(dummyContainer, ChineseCookingPotBlockEntity.OUTPUT_SLOT_1, OUTPUT_SLOT_1_X, OUTPUT_SLOT_1_Y) {
+        this.addSlot(new Slot(dummyContainer, OilCookingPotBlockEntity.OUTPUT_SLOT_1, OUTPUT_SLOT_1_X, OUTPUT_SLOT_1_Y) {
             @Override
             public boolean mayPlace(@NotNull ItemStack stack) {
                 return false;
@@ -239,7 +207,7 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
         });
 
         // 输出槽2
-        this.addSlot(new Slot(dummyContainer, ChineseCookingPotBlockEntity.OUTPUT_SLOT_2, OUTPUT_SLOT_2_X, OUTPUT_SLOT_2_Y) {
+        this.addSlot(new Slot(dummyContainer, OilCookingPotBlockEntity.OUTPUT_SLOT_2, OUTPUT_SLOT_2_X, OUTPUT_SLOT_2_Y) {
             @Override
             public boolean mayPlace(@NotNull ItemStack stack) {
                 return false;
@@ -289,12 +257,12 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
             // 检查是否是燃料
             if (isFuel(itemstack1)) {
                 // 尝试移动到燃料槽
-                if (!this.moveItemStackTo(itemstack1, ChineseCookingPotBlockEntity.FUEL_SLOT, ChineseCookingPotBlockEntity.FUEL_SLOT + 1, false)) {
+                if (!this.moveItemStackTo(itemstack1, OilCookingPotBlockEntity.FUEL_SLOT, OilCookingPotBlockEntity.FUEL_SLOT + 1, false)) {
                     return ItemStack.EMPTY;
                 }
             } else {
                 // 尝试移动到输入槽
-                if (!this.moveItemStackTo(itemstack1, ChineseCookingPotBlockEntity.INPUT_SLOT, ChineseCookingPotBlockEntity.INPUT_SLOT + 1, false)) {
+                if (!this.moveItemStackTo(itemstack1, OilCookingPotBlockEntity.INPUT_SLOT, OilCookingPotBlockEntity.INPUT_SLOT + 1, false)) {
                     return ItemStack.EMPTY;
                 }
             }
@@ -413,7 +381,7 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
             return false;
         }
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                player, ModBlocks.CHINESE_COOKING_POT.get());
+                player, ModBlocks.OIL_COOKING_POT.get());
     }
 
     // 获取数据的方法，供屏幕渲染使用
@@ -438,7 +406,7 @@ public class ChineseCookingPotMenu extends AbstractContainerMenu {
 
     // Getter方法
     @Nullable
-    public ChineseCookingPotBlockEntity getBlockEntity() {
+    public OilCookingPotBlockEntity getBlockEntity() {
         return blockEntity;
     }
 

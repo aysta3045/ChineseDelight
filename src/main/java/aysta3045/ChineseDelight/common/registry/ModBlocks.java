@@ -28,12 +28,12 @@ public class ModBlocks {
     public static final RegistryObject<Block> SESAME_BALE = BLOCKS.register("sesame_bale",
             SesameBaleBlock::new);
 
-    // 中式烹饪锅
-    public static final RegistryObject<Block> CHINESE_COOKING_POT = BLOCKS.register("chinese_cooking_pot",
-            () -> new ChineseCookingPotBlock(Block.Properties.of()
+    // 熬油锅
+    public static final RegistryObject<Block> OIL_COOKING_POT = BLOCKS.register("oil_cooking_pot",
+            () -> new OilCookingPotBlock(Block.Properties.of()
                     .mapColor(MapColor.STONE)
                     .strength(0.5F)
                     .requiresCorrectToolForDrops()
-                    .lightLevel(state -> state.getValue(ChineseCookingPotBlock.LIT) ? 13 : 0)
+                    .lightLevel(state -> state.getValue(OilCookingPotBlock.LIT) ? 13 : 0)
                     .sound(SoundType.STONE)));
 }

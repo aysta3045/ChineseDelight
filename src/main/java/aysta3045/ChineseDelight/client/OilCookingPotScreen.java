@@ -1,7 +1,6 @@
 package aysta3045.ChineseDelight.client;
 
-import aysta3045.ChineseDelight.ChineseDelight;
-import aysta3045.ChineseDelight.common.menu.ChineseCookingPotMenu;
+import aysta3045.ChineseDelight.common.menu.OilCookingPotMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -10,12 +9,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class ChineseCookingPotScreen extends AbstractContainerScreen<ChineseCookingPotMenu> {
+public class OilCookingPotScreen extends AbstractContainerScreen<OilCookingPotMenu> {
     // 使用原版熔炉纹理
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation("chinesedelight", "textures/gui/chinese_cooking_pot.png");
+            new ResourceLocation("chinesedelight", "textures/gui/oil_cooking_pot.png");
 
-    public ChineseCookingPotScreen(ChineseCookingPotMenu menu, Inventory playerInventory, Component title) {
+    public OilCookingPotScreen(OilCookingPotMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.imageWidth = 176;
         this.imageHeight = 166;
@@ -33,33 +32,6 @@ public class ChineseCookingPotScreen extends AbstractContainerScreen<ChineseCook
         // 绘制主背景
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
-        // 渲染燃料进度（火焰）
-        if (menu.isBurning()) {
-            int fuelProgress = menu.getScaledFuel();
-            ChineseDelight.LOGGER.debug("Rendering fuel progress: {} at position ({}, {})",
-                    fuelProgress, x + 56, y + 36 + 13 - fuelProgress);
-
-            // 火焰纹理：从 (176, 0) 开始，尺寸 14x14
-            // 绘制位置：燃料槽上方 (x+56, y+36)，高度根据燃料进度调整
-            if (fuelProgress > 0) {
-                guiGraphics.blit(TEXTURE, x + 56, y + 36 + 13 - fuelProgress,
-                        176, 13 - fuelProgress, 14, fuelProgress);
-            }
-        }
-
-        // 渲染烹饪进度（箭头）
-        if (menu.isCooking()) {
-            int cookProgress = menu.getScaledProgress();
-            ChineseDelight.LOGGER.debug("Rendering cook progress: {} at position ({}, {})",
-                    cookProgress, x + 79, y + 34);
-
-            // 箭头纹理：从 (176, 14) 开始，尺寸 24x17
-            // 绘制位置：输入和输出槽之间 (x+79, y+34)，宽度根据进度调整
-            if (cookProgress > 0) {
-                guiGraphics.blit(TEXTURE, x + 79, y + 34,
-                        176, 14, cookProgress, 16);
-            }
-        }
     }
 
     @Override

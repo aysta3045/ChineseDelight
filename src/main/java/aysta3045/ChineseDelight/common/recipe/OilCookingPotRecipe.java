@@ -16,7 +16,7 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 
 import javax.annotation.Nullable;
 
-public class ChineseCookingPotRecipe implements Recipe<Container> {
+public class OilCookingPotRecipe implements Recipe<Container> {
     private final ResourceLocation id;
     private final Ingredient ingredient;
     private final ItemStack result1;
@@ -24,8 +24,8 @@ public class ChineseCookingPotRecipe implements Recipe<Container> {
     private final int cookingTime;
     private final float experience;
 
-    public ChineseCookingPotRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result1,
-                                   ItemStack result2, int cookingTime, float experience) {
+    public OilCookingPotRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result1,
+                               ItemStack result2, int cookingTime, float experience) {
         this.id = id;
         this.ingredient = ingredient;
         this.result1 = result1;
@@ -33,7 +33,7 @@ public class ChineseCookingPotRecipe implements Recipe<Container> {
         this.cookingTime = cookingTime;
         this.experience = experience;
 
-        ChineseDelight.LOGGER.info("Created ChineseCookingPotRecipe: {}", id);
+        ChineseDelight.LOGGER.info("Created OilCookingPotRecipe: {}", id);
         ChineseDelight.LOGGER.info("  Input: {}", ingredient);
         ChineseDelight.LOGGER.info("  Result1: {} x{}", result1.getItem().getDescriptionId(), result1.getCount());
         ChineseDelight.LOGGER.info("  Result2: {} x{}", result2.getItem().getDescriptionId(), result2.getCount());
@@ -99,7 +99,7 @@ public class ChineseCookingPotRecipe implements Recipe<Container> {
     // 在 ChineseCookingPotRecipe 类中
     @Override
     public RecipeType<?> getType() {
-        return ModRecipes.CHINESE_COOKING_TYPE.get();
+        return ModRecipes.OIL_COOKING_TYPE.get();
     }
 
     @Override
@@ -110,76 +110,60 @@ public class ChineseCookingPotRecipe implements Recipe<Container> {
     }
 
     // 配方类型
-    public static class Type implements RecipeType<ChineseCookingPotRecipe> {
+    public static class Type implements RecipeType<OilCookingPotRecipe> {
         public static final Type INSTANCE = new Type();
-        public static final String ID = "chinese_cooking";
+        public static final String ID = "oil_cooking";
 
         private Type() {}
     }
 
     // 序列化器
-    public static class Serializer implements RecipeSerializer<ChineseCookingPotRecipe> {
+    public static class Serializer implements RecipeSerializer<OilCookingPotRecipe> {
         public static final Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID = new ResourceLocation(ChineseDelight.MODID, "chinese_cooking");
+        public static final ResourceLocation ID = new ResourceLocation(ChineseDelight.MODID, "oil_cooking");
 
-        static {
-            ChineseDelight.LOGGER.info("ChineseCookingPotRecipe Serializer static block - ID: {}", ID);
-        }
 
-        public Serializer() {
-            ChineseDelight.LOGGER.info("ChineseCookingPotRecipe Serializer constructor called");
-        }
 
         @Override
-        public ChineseCookingPotRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            ChineseDelight.LOGGER.info("=== LOADING CHINESE COOKING RECIPE ===");
-            ChineseDelight.LOGGER.info("Recipe ID: {}", recipeId);
+        public OilCookingPotRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 
             // 解析输入材料
             JsonObject inputJson = GsonHelper.getAsJsonObject(json, "input");
             Ingredient ingredient = Ingredient.fromJson(inputJson);
-            ChineseDelight.LOGGER.info("Group: {}", GsonHelper.getAsString(json, "group", ""));
-            ChineseDelight.LOGGER.info("Input ingredient: {}", inputJson);
 
             // 解析第一个结果
             JsonObject result1Json = GsonHelper.getAsJsonObject(json, "result1");
             ItemStack result1 = CraftingHelper.getItemStack(result1Json, true);
-            ChineseDelight.LOGGER.info("Result1: {} x{}", result1.getItem().getDescriptionId(), result1.getCount());
+
 
             // 解析第二个结果（可选）
             ItemStack result2 = ItemStack.EMPTY;
             if (json.has("result2")) {
                 JsonObject result2Json = GsonHelper.getAsJsonObject(json, "result2");
                 result2 = CraftingHelper.getItemStack(result2Json, true);
-                ChineseDelight.LOGGER.info("Result2: {} x{}", result2.getItem().getDescriptionId(), result2.getCount());
-            } else {
-                ChineseDelight.LOGGER.info("No result2 specified, using empty stack");
             }
 
             // 解析烹饪时间和经验值
             int cookingTime = GsonHelper.getAsInt(json, "cookingtime", 200);
             float experience = GsonHelper.getAsFloat(json, "experience", 0.0F);
-            ChineseDelight.LOGGER.info("Cooking time: {}, Experience: {}", cookingTime, experience);
 
-            ChineseDelight.LOGGER.info("=== RECIPE LOADED SUCCESSFULLY ===\n");
-
-            return new ChineseCookingPotRecipe(recipeId, ingredient, result1, result2, cookingTime, experience);
+            return new OilCookingPotRecipe(recipeId, ingredient, result1, result2, cookingTime, experience);
         }
 
         @Nullable
         @Override
-        public ChineseCookingPotRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+        public OilCookingPotRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
             ItemStack result1 = buffer.readItem();
             ItemStack result2 = buffer.readItem();
             int cookingTime = buffer.readVarInt();
             float experience = buffer.readFloat();
 
-            return new ChineseCookingPotRecipe(recipeId, ingredient, result1, result2, cookingTime, experience);
+            return new OilCookingPotRecipe(recipeId, ingredient, result1, result2, cookingTime, experience);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buffer, ChineseCookingPotRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buffer, OilCookingPotRecipe recipe) {
             recipe.ingredient.toNetwork(buffer);
             buffer.writeItem(recipe.result1);
             buffer.writeItem(recipe.result2);

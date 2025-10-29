@@ -23,7 +23,7 @@ public class ClientSetup
         event.enqueueWork(() -> {
 
             // 注册中式烹饪锅屏幕
-            MenuScreens.register(ModMenus.CHINESE_COOKING_POT_MENU.get(), ChineseCookingPotScreen::new);
+            MenuScreens.register(ModMenus.OIL_COOKING_POT_MENU.get(), OilCookingPotScreen::new);
 
         });
     }

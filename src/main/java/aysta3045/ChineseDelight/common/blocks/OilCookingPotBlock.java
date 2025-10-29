@@ -1,6 +1,6 @@
 package aysta3045.ChineseDelight.common.blocks;
 
-import aysta3045.ChineseDelight.common.block.entity.ChineseCookingPotBlockEntity;
+import aysta3045.ChineseDelight.common.block.entity.OilCookingPotBlockEntity;
 import aysta3045.ChineseDelight.common.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,14 +30,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class ChineseCookingPotBlock extends BaseEntityBlock {
+public class OilCookingPotBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     // 碰撞箱形状
     private static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 10.0D, 14.0D);
 
-    public ChineseCookingPotBlock(Properties properties) {
+    public OilCookingPotBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
@@ -49,8 +49,8 @@ public class ChineseCookingPotBlock extends BaseEntityBlock {
                                  Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof ChineseCookingPotBlockEntity) {
-                player.openMenu((ChineseCookingPotBlockEntity) blockEntity);
+            if (blockEntity instanceof OilCookingPotBlockEntity) {
+                player.openMenu((OilCookingPotBlockEntity) blockEntity);
                 return InteractionResult.CONSUME;
             }
         }
@@ -61,8 +61,7 @@ public class ChineseCookingPotBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(newState.getBlock())) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof ChineseCookingPotBlockEntity cookingPotBlockEntity) {
-                // 修复：直接使用我们自己的 drops 方法，而不是转换为 Container
+            if (blockEntity instanceof OilCookingPotBlockEntity cookingPotBlockEntity) {
                 cookingPotBlockEntity.drops();
                 level.updateNeighbourForOutputSignal(pos, this);
             }
@@ -119,14 +118,14 @@ public class ChineseCookingPotBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new ChineseCookingPotBlockEntity(pos, state);
+        return new OilCookingPotBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return level.isClientSide ? null : createTickerHelper(blockEntityType,
-                ModBlockEntities.CHINESE_COOKING_POT.get(), ChineseCookingPotBlockEntity::tick);
+                ModBlockEntities.OIL_COOKING_POT.get(), OilCookingPotBlockEntity::tick);
     }
 
     // 支持漏斗交互
