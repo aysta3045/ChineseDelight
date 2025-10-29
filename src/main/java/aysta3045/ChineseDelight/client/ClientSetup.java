@@ -1,7 +1,9 @@
 package aysta3045.ChineseDelight.client;
 
 import aysta3045.ChineseDelight.ChineseDelight;
+import aysta3045.ChineseDelight.common.registry.ModMenus;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -19,6 +21,10 @@ public class ClientSetup
         LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
 
         event.enqueueWork(() -> {
+
+            // 注册中式烹饪锅屏幕
+            MenuScreens.register(ModMenus.CHINESE_COOKING_POT_MENU.get(), ChineseCookingPotScreen::new);
+
         });
     }
 }

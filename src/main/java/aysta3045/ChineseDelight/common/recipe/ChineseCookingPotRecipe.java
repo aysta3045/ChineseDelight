@@ -1,65 +1,89 @@
 package aysta3045.ChineseDelight.common.recipe;
 
 import aysta3045.ChineseDelight.ChineseDelight;
-import com.google.gson.JsonArray;
+import aysta3045.ChineseDelight.common.registry.ModRecipes;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+import net.minecraftforge.common.crafting.CraftingHelper;
 
-public class ChineseCookingPotRecipe implements Recipe<SimpleContainer> {
+import javax.annotation.Nullable;
+
+public class ChineseCookingPotRecipe implements Recipe<Container> {
     private final ResourceLocation id;
-    private final ItemStack output;
-    private final ItemStack secondaryOutput;
-    private final NonNullList<Ingredient> recipeItems;
+    private final Ingredient ingredient;
+    private final ItemStack result1;
+    private final ItemStack result2;
     private final int cookingTime;
+    private final float experience;
 
-    public ChineseCookingPotRecipe(ResourceLocation id, ItemStack output, ItemStack secondaryOutput, NonNullList<Ingredient> recipeItems, int cookingTime) {
+    public ChineseCookingPotRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result1,
+                                   ItemStack result2, int cookingTime, float experience) {
         this.id = id;
-        this.output = output;
-        this.secondaryOutput = secondaryOutput;
-        this.recipeItems = recipeItems;
+        this.ingredient = ingredient;
+        this.result1 = result1;
+        this.result2 = result2;
         this.cookingTime = cookingTime;
+        this.experience = experience;
+
+        ChineseDelight.LOGGER.info("Created ChineseCookingPotRecipe: {}", id);
+        ChineseDelight.LOGGER.info("  Input: {}", ingredient);
+        ChineseDelight.LOGGER.info("  Result1: {} x{}", result1.getItem().getDescriptionId(), result1.getCount());
+        ChineseDelight.LOGGER.info("  Result2: {} x{}", result2.getItem().getDescriptionId(), result2.getCount());
+        ChineseDelight.LOGGER.info("  CookingTime: {}, Experience: {}", cookingTime, experience);
+    }
+
+    // 获取输入材料
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    // 获取第一个结果
+    @Override
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
+        return result1.copy();
+    }
+
+    public ItemStack getResultItem1() {
+        return result1.copy();
+    }
+
+    // 获取第二个结果
+    public ItemStack getResultItem2() {
+        return result2.copy();
+    }
+
+    // 获取烹饪时间
+    public int getCookingTime() {
+        return cookingTime;
+    }
+
+    // 获取经验值
+    public float getExperience() {
+        return experience;
     }
 
     @Override
-    public boolean matches(SimpleContainer pContainer, Level pLevel) {
-        if (pLevel.isClientSide()) {
-            return false;
-        }
-
-        return recipeItems.get(0).test(pContainer.getItem(0));
+    public boolean matches(Container container, Level level) {
+        // 检查输入槽位是否有匹配的物品
+        return ingredient.test(container.getItem(0));
     }
 
     @Override
-    public NonNullList<Ingredient> getIngredients() {
-        return recipeItems;
+    public ItemStack assemble(Container container, RegistryAccess registryAccess) {
+        return result1.copy();
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess) {
-        return output.copy();
-    }
-
-    public ItemStack getSecondaryResultItem() {
-        return secondaryOutput.copy();
-    }
-
-    @Override
-    public boolean canCraftInDimensions(int pWidth, int pHeight) {
+    public boolean canCraftInDimensions(int width, int height) {
         return true;
-    }
-
-    @Override
-    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
-        return output.copy();
     }
 
     @Override
@@ -72,72 +96,95 @@ public class ChineseCookingPotRecipe implements Recipe<SimpleContainer> {
         return Serializer.INSTANCE;
     }
 
+    // 在 ChineseCookingPotRecipe 类中
     @Override
     public RecipeType<?> getType() {
-        return Type.INSTANCE;
+        return ModRecipes.CHINESE_COOKING_TYPE.get();
     }
 
-    public int getCookingTime() {
-        return cookingTime;
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        NonNullList<Ingredient> ingredients = NonNullList.create();
+        ingredients.add(ingredient);
+        return ingredients;
     }
 
+    // 配方类型
     public static class Type implements RecipeType<ChineseCookingPotRecipe> {
-        private Type() { }
         public static final Type INSTANCE = new Type();
-        public static final String ID = "cooking_pot";
+        public static final String ID = "chinese_cooking";
+
+        private Type() {}
     }
 
+    // 序列化器
     public static class Serializer implements RecipeSerializer<ChineseCookingPotRecipe> {
         public static final Serializer INSTANCE = new Serializer();
-        // 修复过时的构造函数警告
-        public static final ResourceLocation ID = new ResourceLocation(ChineseDelight.MODID, "cooking_pot");
+        public static final ResourceLocation ID = new ResourceLocation(ChineseDelight.MODID, "chinese_cooking");
 
-        @Override
-        public ChineseCookingPotRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
-            ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "output"));
+        static {
+            ChineseDelight.LOGGER.info("ChineseCookingPotRecipe Serializer static block - ID: {}", ID);
+        }
 
-            ItemStack secondaryOutput = ItemStack.EMPTY;
-            if (pSerializedRecipe.has("secondary_output")) {
-                secondaryOutput = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "secondary_output"));
-            }
-
-            JsonArray ingredients = GsonHelper.getAsJsonArray(pSerializedRecipe, "ingredients");
-            NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
-
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
-            }
-
-            int cookingTime = GsonHelper.getAsInt(pSerializedRecipe, "cooking_time", 200);
-
-            return new ChineseCookingPotRecipe(pRecipeId, output, secondaryOutput, inputs, cookingTime);
+        public Serializer() {
+            ChineseDelight.LOGGER.info("ChineseCookingPotRecipe Serializer constructor called");
         }
 
         @Override
-        public @Nullable ChineseCookingPotRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
-            NonNullList<Ingredient> inputs = NonNullList.withSize(pBuffer.readInt(), Ingredient.EMPTY);
+        public ChineseCookingPotRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+            ChineseDelight.LOGGER.info("=== LOADING CHINESE COOKING RECIPE ===");
+            ChineseDelight.LOGGER.info("Recipe ID: {}", recipeId);
 
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromNetwork(pBuffer));
+            // 解析输入材料
+            JsonObject inputJson = GsonHelper.getAsJsonObject(json, "input");
+            Ingredient ingredient = Ingredient.fromJson(inputJson);
+            ChineseDelight.LOGGER.info("Group: {}", GsonHelper.getAsString(json, "group", ""));
+            ChineseDelight.LOGGER.info("Input ingredient: {}", inputJson);
+
+            // 解析第一个结果
+            JsonObject result1Json = GsonHelper.getAsJsonObject(json, "result1");
+            ItemStack result1 = CraftingHelper.getItemStack(result1Json, true);
+            ChineseDelight.LOGGER.info("Result1: {} x{}", result1.getItem().getDescriptionId(), result1.getCount());
+
+            // 解析第二个结果（可选）
+            ItemStack result2 = ItemStack.EMPTY;
+            if (json.has("result2")) {
+                JsonObject result2Json = GsonHelper.getAsJsonObject(json, "result2");
+                result2 = CraftingHelper.getItemStack(result2Json, true);
+                ChineseDelight.LOGGER.info("Result2: {} x{}", result2.getItem().getDescriptionId(), result2.getCount());
+            } else {
+                ChineseDelight.LOGGER.info("No result2 specified, using empty stack");
             }
 
-            ItemStack output = pBuffer.readItem();
-            ItemStack secondaryOutput = pBuffer.readItem();
-            int cookingTime = pBuffer.readInt();
-            return new ChineseCookingPotRecipe(pRecipeId, output, secondaryOutput, inputs, cookingTime);
+            // 解析烹饪时间和经验值
+            int cookingTime = GsonHelper.getAsInt(json, "cookingtime", 200);
+            float experience = GsonHelper.getAsFloat(json, "experience", 0.0F);
+            ChineseDelight.LOGGER.info("Cooking time: {}, Experience: {}", cookingTime, experience);
+
+            ChineseDelight.LOGGER.info("=== RECIPE LOADED SUCCESSFULLY ===\n");
+
+            return new ChineseCookingPotRecipe(recipeId, ingredient, result1, result2, cookingTime, experience);
+        }
+
+        @Nullable
+        @Override
+        public ChineseCookingPotRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+            Ingredient ingredient = Ingredient.fromNetwork(buffer);
+            ItemStack result1 = buffer.readItem();
+            ItemStack result2 = buffer.readItem();
+            int cookingTime = buffer.readVarInt();
+            float experience = buffer.readFloat();
+
+            return new ChineseCookingPotRecipe(recipeId, ingredient, result1, result2, cookingTime, experience);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf pBuffer, ChineseCookingPotRecipe pRecipe) {
-            pBuffer.writeInt(pRecipe.getIngredients().size());
-
-            for (Ingredient ing : pRecipe.getIngredients()) {
-                ing.toNetwork(pBuffer);
-            }
-
-            pBuffer.writeItem(pRecipe.getResultItem(RegistryAccess.EMPTY));
-            pBuffer.writeItem(pRecipe.getSecondaryResultItem());
-            pBuffer.writeInt(pRecipe.cookingTime);
+        public void toNetwork(FriendlyByteBuf buffer, ChineseCookingPotRecipe recipe) {
+            recipe.ingredient.toNetwork(buffer);
+            buffer.writeItem(recipe.result1);
+            buffer.writeItem(recipe.result2);
+            buffer.writeVarInt(recipe.cookingTime);
+            buffer.writeFloat(recipe.experience);
         }
     }
 }

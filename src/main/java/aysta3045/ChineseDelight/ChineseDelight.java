@@ -19,7 +19,7 @@ import aysta3045.ChineseDelight.common.registry.*;
 public class ChineseDelight
 {
     public static final String MODID = "chinesedelight";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public ChineseDelight()
     {
@@ -37,7 +37,8 @@ public class ChineseDelight
         ModBlocks.BLOCKS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
-        ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
+        ModRecipes.SERIALIZERS.register(modEventBus);
+        ModRecipes.RECIPE_TYPES.register(modEventBus);
         ModCreativeTabs.CREATIVE_TABS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);

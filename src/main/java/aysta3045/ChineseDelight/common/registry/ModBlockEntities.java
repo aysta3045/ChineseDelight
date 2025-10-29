@@ -14,5 +14,6 @@ public class ModBlockEntities {
     // 烹饪锅方块实体
     public static final RegistryObject<BlockEntityType<ChineseCookingPotBlockEntity>> CHINESE_COOKING_POT =
             BLOCK_ENTITIES.register("chinese_cooking_pot",
-                    () -> BlockEntityType.Builder.of(ChineseCookingPotBlockEntity::new, ModBlocks.CHINESE_COOKING_POT.get()).build(null));
+                    () -> BlockEntityType.Builder.of(ChineseCookingPotBlockEntity::new,
+                            ModBlocks.CHINESE_COOKING_POT.get()).build(null));
 }

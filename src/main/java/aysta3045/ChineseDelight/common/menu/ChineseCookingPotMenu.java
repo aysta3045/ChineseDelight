@@ -1,8 +1,11 @@
 package aysta3045.ChineseDelight.common.menu;
 
 import aysta3045.ChineseDelight.common.block.entity.ChineseCookingPotBlockEntity;
+import aysta3045.ChineseDelight.common.registry.ModBlocks;
 import aysta3045.ChineseDelight.common.registry.ModMenus;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -11,134 +14,435 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ChineseCookingPotMenu extends AbstractContainerMenu {
+    @Nullable
     public final ChineseCookingPotBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
-    public ChineseCookingPotMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+    // 修正的槽位位置定义 - 确保在GUI范围内
+    private static final int FUEL_SLOT_X = 56;
+    private static final int FUEL_SLOT_Y = 53;
+    private static final int INPUT_SLOT_X = 56;
+    private static final int INPUT_SLOT_Y = 17;
+    private static final int OUTPUT_SLOT_1_X = 116;
+    private static final int OUTPUT_SLOT_1_Y = 35;
+    private static final int OUTPUT_SLOT_2_X = 134;
+    private static final int OUTPUT_SLOT_2_Y = 35;
+
+    // 玩家物品栏位置
+    private static final int PLAYER_INVENTORY_X = 8;
+    private static final int PLAYER_INVENTORY_Y = 84;
+    private static final int PLAYER_HOTBAR_Y = 142;
+
+    // 槽位常量
+    private static final int MACHINE_SLOT_COUNT = 4;
+    private static final int PLAYER_INVENTORY_SLOT_COUNT = 27;
+    private static final int PLAYER_HOTBAR_SLOT_COUNT = 9;
+    private static final int TOTAL_SLOT_COUNT = MACHINE_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT + PLAYER_HOTBAR_SLOT_COUNT;
+
+    // 槽位索引常量
+    private static final int PLAYER_INVENTORY_START_INDEX = MACHINE_SLOT_COUNT;
+    private static final int PLAYER_HOTBAR_START_INDEX = PLAYER_INVENTORY_START_INDEX + PLAYER_INVENTORY_SLOT_COUNT;
+    private static final int PLAYER_INVENTORY_END_INDEX = PLAYER_HOTBAR_START_INDEX + PLAYER_HOTBAR_SLOT_COUNT;
+
+    public ChineseCookingPotMenu(int containerId, Inventory playerInventory, FriendlyByteBuf extraData) {
+        this(containerId, playerInventory,
+                getBlockEntityFromBuffer(playerInventory, extraData),
+                createContainerData());
     }
 
-    public ChineseCookingPotMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(ModMenus.CHINESE_COOKING_POT_MENU.get(), id);
-        checkContainerSize(inv, 4);
-        blockEntity = (ChineseCookingPotBlockEntity) entity;
-        this.level = inv.player.level();
+    public ChineseCookingPotMenu(int containerId, Inventory playerInventory, @Nullable BlockEntity blockEntity, ContainerData data) {
+        super(ModMenus.CHINESE_COOKING_POT_MENU.get(), containerId);
+
+        this.blockEntity = (blockEntity instanceof ChineseCookingPotBlockEntity) ?
+                (ChineseCookingPotBlockEntity) blockEntity : null;
+        this.level = playerInventory.player.level();
         this.data = data;
 
-        addPlayerInventory(inv);
-        addPlayerHotbar(inv);
+        // 先添加机器槽位，再添加玩家槽位
+        if (this.blockEntity != null) {
+            addSlots();
+        } else {
+            addDummySlots();
+        }
 
-        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            // Input slot
-            this.addSlot(new SlotItemHandler(handler, 0, 56, 17));
-            // Fuel slot
-            this.addSlot(new SlotItemHandler(handler, 1, 56, 53));
-            // Output slot 1
-            this.addSlot(new SlotItemHandler(handler, 2, 116, 21) {
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    return false;
-                }
-            });
-            // Output slot 2
-            this.addSlot(new SlotItemHandler(handler, 3, 116, 53) {
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    return false;
-                }
-            });
-        });
+        addPlayerInventory(playerInventory);
+        addPlayerHotbar(playerInventory);
 
         addDataSlots(data);
     }
 
-    public boolean isCrafting() {
-        return data.get(0) > 0;
+    public boolean isBurning() {
+        // 检查是否在燃烧（燃料时间 > 0）
+        return data.get(ChineseCookingPotBlockEntity.DATA_FUEL_TIME) > 0;
     }
 
-    public int getScaledProgress() {
-        int progress = data.get(0);
-        int maxProgress = data.get(1);
-        int progressArrowSize = 24; // This is the height in pixels of your arrow
-
-        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+    public boolean isCooking() {
+        // 检查是否在烹饪（进度 > 0）
+        return data.get(ChineseCookingPotBlockEntity.DATA_COOKING_PROGRESS) > 0;
     }
 
     public int getScaledFuel() {
-        int fuelTime = data.get(2);
-        int maxFuelTime = data.get(3);
-        int fuelHeight = 14; // This is the height in pixels of your fuel flame
+        int fuelTime = data.get(ChineseCookingPotBlockEntity.DATA_FUEL_TIME);
+        int fuelDuration = data.get(ChineseCookingPotBlockEntity.DATA_FUEL_DURATION);
 
-        if (maxFuelTime == 0) {
-            maxFuelTime = 200;
+        if (fuelDuration == 0) {
+            fuelDuration = 200; // 默认值
         }
 
-        return fuelTime != 0 ? fuelTime * fuelHeight / maxFuelTime : 0;
+        // 返回燃料进度的像素高度（最大13像素）
+        return fuelTime * 13 / fuelDuration;
     }
 
-    // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
-    private static final int HOTBAR_SLOT_COUNT = 9;
-    private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
-    private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
-    private static final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
-    private static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
-    private static final int VANILLA_FIRST_SLOT_INDEX = 0;
-    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
-    private static final int TE_INVENTORY_SLOT_COUNT = 4;  // Number of slots in the block entity
+    public int getScaledProgress() {
+        int progress = data.get(ChineseCookingPotBlockEntity.DATA_COOKING_PROGRESS);
+        int cookingTime = data.get(ChineseCookingPotBlockEntity.DATA_COOKING_TIME);
 
-    @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) {
-        Slot sourceSlot = slots.get(index);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
-        ItemStack sourceStack = sourceSlot.getItem();
-        ItemStack copyOfSourceStack = sourceStack.copy();
+        if (cookingTime == 0) {
+            cookingTime = 200; // 默认值
+        }
 
-        // Check if the slot clicked is one of the vanilla container slots
-        if (index < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-            // This is a vanilla container slot so merge the stack into the tile inventory
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;
-            }
-        } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
-            // This is a TE slot so merge the stack into the players inventory
-            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;
-            }
-        } else {
-            System.out.println("Invalid slotIndex:" + index);
-            return ItemStack.EMPTY;
+        // 返回烹饪进度的像素宽度（最大24像素）
+        return progress * 24 / cookingTime;
+    }
+    @Nullable
+    private static BlockEntity getBlockEntityFromBuffer(Inventory playerInventory, @Nullable FriendlyByteBuf extraData) {
+        if (extraData == null) {
+            return null;
         }
-        // If stack size == 0 (the entire stack was moved) set slot contents to null
-        if (sourceStack.getCount() == 0) {
-            sourceSlot.set(ItemStack.EMPTY);
-        } else {
-            sourceSlot.setChanged();
-        }
-        sourceSlot.onTake(playerIn, sourceStack);
-        return copyOfSourceStack;
+
+        BlockPos pos = extraData.readBlockPos();
+        Level level = playerInventory.player.level();
+        return level.getBlockEntity(pos);
     }
 
-    @Override
-    public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player,
-                net.minecraft.world.level.block.Blocks.FURNACE); // Replace with your actual block
+    private static ContainerData createContainerData() {
+        return new SimpleContainerData(4) {
+            @Override
+            public int get(int index) {
+                return switch (index) {
+                    case 0 -> 0; // cookingProgress
+                    case 1 -> 200; // cookingTime
+                    case 2 -> 0; // fuelTime
+                    case 3 -> 0; // fuelDuration
+                    default -> 0;
+                };
+            }
+
+            @Override
+            public void set(int index, int value) {
+                // 客户端不需要设置数据
+            }
+
+            @Override
+            public int getCount() {
+                return 4;
+            }
+        };
+    }
+
+    private void addSlots() {
+        if (blockEntity == null) return;
+
+        blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+            // 燃料槽 - 只接受燃料物品
+            this.addSlot(new SlotItemHandler(handler, ChineseCookingPotBlockEntity.FUEL_SLOT, FUEL_SLOT_X, FUEL_SLOT_Y) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    return isFuel(stack);
+                }
+
+                @Override
+                public int getMaxStackSize() {
+                    return 64;
+                }
+            });
+
+            // 输入槽
+            this.addSlot(new SlotItemHandler(handler, ChineseCookingPotBlockEntity.INPUT_SLOT, INPUT_SLOT_X, INPUT_SLOT_Y) {
+                @Override
+                public int getMaxStackSize() {
+                    return 64;
+                }
+            });
+
+            // 输出槽1 - 不接受输入
+            this.addSlot(new SlotItemHandler(handler, ChineseCookingPotBlockEntity.OUTPUT_SLOT_1, OUTPUT_SLOT_1_X, OUTPUT_SLOT_1_Y) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    return false;
+                }
+
+                @Override
+                public int getMaxStackSize() {
+                    return 64;
+                }
+
+                @Override
+                public void onTake(Player player, ItemStack stack) {
+                    super.onTake(player, stack);
+                    // 可以在这里添加获取物品时的额外逻辑
+                }
+            });
+
+            // 输出槽2 - 不接受输入
+            this.addSlot(new SlotItemHandler(handler, ChineseCookingPotBlockEntity.OUTPUT_SLOT_2, OUTPUT_SLOT_2_X, OUTPUT_SLOT_2_Y) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    return false;
+                }
+
+                @Override
+                public int getMaxStackSize() {
+                    return 64;
+                }
+
+                @Override
+                public void onTake(Player player, ItemStack stack) {
+                    super.onTake(player, stack);
+                    // 可以在这里添加获取物品时的额外逻辑
+                }
+            });
+        });
+    }
+
+    private void addDummySlots() {
+        // 添加空的槽位以保持槽位数量一致，但放在正确的位置
+        SimpleContainer dummyContainer = new SimpleContainer(MACHINE_SLOT_COUNT);
+
+        // 燃料槽
+        this.addSlot(new Slot(dummyContainer, ChineseCookingPotBlockEntity.FUEL_SLOT, FUEL_SLOT_X, FUEL_SLOT_Y) {
+            @Override
+            public boolean mayPlace(@NotNull ItemStack stack) {
+                return false;
+            }
+        });
+
+        // 输入槽
+        this.addSlot(new Slot(dummyContainer, ChineseCookingPotBlockEntity.INPUT_SLOT, INPUT_SLOT_X, INPUT_SLOT_Y) {
+            @Override
+            public boolean mayPlace(@NotNull ItemStack stack) {
+                return false;
+            }
+        });
+
+        // 输出槽1
+        this.addSlot(new Slot(dummyContainer, ChineseCookingPotBlockEntity.OUTPUT_SLOT_1, OUTPUT_SLOT_1_X, OUTPUT_SLOT_1_Y) {
+            @Override
+            public boolean mayPlace(@NotNull ItemStack stack) {
+                return false;
+            }
+        });
+
+        // 输出槽2
+        this.addSlot(new Slot(dummyContainer, ChineseCookingPotBlockEntity.OUTPUT_SLOT_2, OUTPUT_SLOT_2_X, OUTPUT_SLOT_2_Y) {
+            @Override
+            public boolean mayPlace(@NotNull ItemStack stack) {
+                return false;
+            }
+        });
     }
 
     private void addPlayerInventory(Inventory playerInventory) {
-        for (int i = 0; i < 3; ++i) {
-            for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 84 + i * 18));
+        for (int row = 0; row < 3; ++row) {
+            for (int col = 0; col < 9; ++col) {
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9,
+                        PLAYER_INVENTORY_X + col * 18,
+                        PLAYER_INVENTORY_Y + row * 18));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
-        for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
+        for (int col = 0; col < 9; ++col) {
+            this.addSlot(new Slot(playerInventory, col,
+                    PLAYER_INVENTORY_X + col * 18,
+                    PLAYER_HOTBAR_Y));
         }
+    }
+
+    @Override
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+
+        if (slot == null || !slot.hasItem()) {
+            return itemstack;
+        }
+
+        ItemStack itemstack1 = slot.getItem();
+        itemstack = itemstack1.copy();
+
+        // 如果点击的是机器槽位 (0-3)
+        if (index < PLAYER_INVENTORY_START_INDEX) {
+            // 尝试将物品移动到玩家物品栏
+            if (!this.moveItemStackTo(itemstack1, PLAYER_INVENTORY_START_INDEX, PLAYER_INVENTORY_END_INDEX, true)) {
+                return ItemStack.EMPTY;
+            }
+        }
+        // 如果点击的是玩家物品栏槽位 (4-39)
+        else {
+            // 检查是否是燃料
+            if (isFuel(itemstack1)) {
+                // 尝试移动到燃料槽
+                if (!this.moveItemStackTo(itemstack1, ChineseCookingPotBlockEntity.FUEL_SLOT, ChineseCookingPotBlockEntity.FUEL_SLOT + 1, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
+                // 尝试移动到输入槽
+                if (!this.moveItemStackTo(itemstack1, ChineseCookingPotBlockEntity.INPUT_SLOT, ChineseCookingPotBlockEntity.INPUT_SLOT + 1, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+        }
+
+        if (itemstack1.isEmpty()) {
+            slot.set(ItemStack.EMPTY);
+        } else {
+            slot.setChanged();
+        }
+
+        if (itemstack1.getCount() == itemstack.getCount()) {
+            return ItemStack.EMPTY;
+        }
+
+        slot.onTake(player, itemstack1);
+        return itemstack;
+    }
+
+    @Override
+    protected boolean moveItemStackTo(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
+        boolean flag = false;
+        int i = startIndex;
+
+        if (reverseDirection) {
+            i = endIndex - 1;
+        }
+
+        if (stack.isStackable()) {
+            while (!stack.isEmpty()) {
+                if (reverseDirection) {
+                    if (i < startIndex) {
+                        break;
+                    }
+                } else if (i >= endIndex) {
+                    break;
+                }
+
+                Slot slot = this.slots.get(i);
+                ItemStack itemstack = slot.getItem();
+
+                if (!itemstack.isEmpty() && ItemStack.isSameItemSameTags(stack, itemstack) && slot.mayPlace(stack)) {
+                    int j = itemstack.getCount() + stack.getCount();
+                    int maxSize = Math.min(slot.getMaxStackSize(), stack.getMaxStackSize());
+
+                    if (j <= maxSize) {
+                        stack.setCount(0);
+                        itemstack.setCount(j);
+                        slot.setChanged();
+                        flag = true;
+                    } else if (itemstack.getCount() < maxSize) {
+                        stack.shrink(maxSize - itemstack.getCount());
+                        itemstack.setCount(maxSize);
+                        slot.setChanged();
+                        flag = true;
+                    }
+                }
+
+                if (reverseDirection) {
+                    i--;
+                } else {
+                    i++;
+                }
+            }
+        }
+
+        if (!stack.isEmpty()) {
+            if (reverseDirection) {
+                i = endIndex - 1;
+            } else {
+                i = startIndex;
+            }
+
+            while (true) {
+                if (reverseDirection) {
+                    if (i < startIndex) {
+                        break;
+                    }
+                } else if (i >= endIndex) {
+                    break;
+                }
+
+                Slot slot1 = this.slots.get(i);
+                ItemStack itemstack1 = slot1.getItem();
+
+                if (itemstack1.isEmpty() && slot1.mayPlace(stack)) {
+                    if (stack.getCount() > slot1.getMaxStackSize()) {
+                        slot1.setByPlayer(stack.split(slot1.getMaxStackSize()));
+                    } else {
+                        slot1.setByPlayer(stack.split(stack.getCount()));
+                    }
+
+                    slot1.setChanged();
+                    flag = true;
+                    break;
+                }
+
+                if (reverseDirection) {
+                    i--;
+                } else {
+                    i++;
+                }
+            }
+        }
+
+        return flag;
+    }
+
+    private boolean isFuel(ItemStack stack) {
+        return net.minecraftforge.common.ForgeHooks.getBurnTime(stack, null) > 0;
+    }
+
+    @Override
+    public boolean stillValid(@NotNull Player player) {
+        if (blockEntity == null) {
+            return false;
+        }
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
+                player, ModBlocks.CHINESE_COOKING_POT.get());
+    }
+
+    // 获取数据的方法，供屏幕渲染使用
+    public int getCookProgress() {
+        int cookingProgress = data.get(0);
+        int cookingTime = data.get(1);
+        return cookingTime != 0 && cookingProgress != 0 ? cookingProgress * 24 / cookingTime : 0;
+    }
+
+    public int getBurnProgress() {
+        int fuelTime = data.get(2);
+        int fuelDuration = data.get(3);
+        if (fuelDuration == 0) {
+            fuelDuration = 200; // 默认值
+        }
+        return fuelTime != 0 ? fuelTime * 13 / fuelDuration : 0;
+    }
+
+    public boolean isLit() {
+        return data.get(2) > 0;
+    }
+
+    // Getter方法
+    @Nullable
+    public ChineseCookingPotBlockEntity getBlockEntity() {
+        return blockEntity;
+    }
+
+    public ContainerData getData() {
+        return data;
     }
 }

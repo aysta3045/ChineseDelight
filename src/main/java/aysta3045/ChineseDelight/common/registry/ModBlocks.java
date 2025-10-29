@@ -4,6 +4,7 @@ import aysta3045.ChineseDelight.ChineseDelight;
 import aysta3045.ChineseDelight.common.blocks.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
@@ -29,10 +30,10 @@ public class ModBlocks {
 
     // 中式烹饪锅
     public static final RegistryObject<Block> CHINESE_COOKING_POT = BLOCKS.register("chinese_cooking_pot",
-            () -> new ChineseCookingPotBlock(BlockBehaviour.Properties.of()
+            () -> new ChineseCookingPotBlock(Block.Properties.of()
                     .mapColor(MapColor.STONE)
-                    .strength(3.5F, 6.0F)
+                    .strength(0.5F)
                     .requiresCorrectToolForDrops()
-                    .noOcclusion() // 无遮挡渲染
-            ));
+                    .lightLevel(state -> state.getValue(ChineseCookingPotBlock.LIT) ? 13 : 0)
+                    .sound(SoundType.STONE)));
 }
