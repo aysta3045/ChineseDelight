@@ -6,19 +6,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.food.FoodProperties;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static aysta3045.ChineseDelight.common.registry.ModFoods.FOOD_PROPERTIES;
+
 public class HotDryNoodlesItem extends Item
 {
-    // 定义食物属性
-    private static final FoodProperties FOOD_PROPERTIES = new FoodProperties.Builder()
-            .nutrition(6) // 饱食度
-            .saturationMod(8f) // 饱和度
-            .build();
-
     public HotDryNoodlesItem() {
         super(new Item.Properties()
                 .food(FOOD_PROPERTIES)
