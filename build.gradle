@@ -134,7 +134,6 @@ repositories {
 dependencies {
 
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-
     // Farmer's Delight 依赖
     //implementation fg.deobf("curse.maven:farmers-delight-398521:${farmers_delight_file_id}")
     // compile against the JEI API but do not include it at runtime
