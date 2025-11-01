@@ -10,6 +10,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.level.block.BaseEntityBlock;
 
 public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS =
@@ -30,10 +31,15 @@ public class ModBlocks {
 
     // 熬油锅
     public static final RegistryObject<Block> OIL_COOKING_POT = BLOCKS.register("oil_cooking_pot",
-            () -> new OilCookingPotBlock(Block.Properties.of()
+            () -> new OilCookingPotBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE)
                     .strength(0.5F)
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> state.getValue(OilCookingPotBlock.LIT) ? 13 : 0)
                     .sound(SoundType.STONE)));
+
+    //牛油块
+    public static final RegistryObject<Block> BEEF_TALLOW_BLOCK = BLOCKS.register("beef_tallow_block",
+            BeefTallowBlock::new);
+
 }

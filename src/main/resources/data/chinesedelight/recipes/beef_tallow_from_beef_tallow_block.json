@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "chinesedelight:beef_tallow_block"
+    }
+  ],
+  "result": {
+    "item": "chinesedelight:beef_tallow",
+    "count": 9
+  }
+}
