@@ -10,7 +10,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.minecraft.world.level.block.BaseEntityBlock;
 
 public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS =
@@ -33,7 +32,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> OIL_COOKING_POT = BLOCKS.register("oil_cooking_pot",
             () -> new OilCookingPotBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE)
-                    .strength(0.5F)
+                    .strength(3.0F,4.8F)
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> state.getValue(OilCookingPotBlock.LIT) ? 13 : 0)
                     .sound(SoundType.STONE)));

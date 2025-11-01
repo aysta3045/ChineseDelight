@@ -418,19 +418,15 @@ public class OilCookingPotBlockEntity extends BlockEntity implements MenuProvide
     public ItemStackHandler getItemHandler() {
         return itemHandler;
     }
-
     public int getCookingProgress() {
         return cookingProgress;
     }
-
     public int getCookingTime() {
         return cookingTime;
     }
-
     public int getFuelTime() {
         return fuelTime;
     }
-
     public int getFuelDuration() {
         return fuelDuration;
     }

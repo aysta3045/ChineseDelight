@@ -14,7 +14,7 @@ public class BeefTallowBlock extends Block {
     public BeefTallowBlock() {
         super(Properties.of()
                 .mapColor(MapColor.COLOR_YELLOW) // 地图颜色
-                .strength(1.0f, 5.0f) // 硬度、爆炸抗性
+                .strength(0.8f, 2.5f) // 硬度、爆炸抗性
                 .friction(0.8f) // 摩擦力（比冰高，比普通方块略滑）
                 .speedFactor(0.95f) // 移动速度因子（略慢）
                 .sound(SoundType.SLIME_BLOCK) // 使用黏液块音效

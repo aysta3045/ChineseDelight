@@ -32,12 +32,6 @@ public class OilCookingPotRecipe implements Recipe<Container> {
         this.result2 = result2;
         this.cookingTime = cookingTime;
         this.experience = experience;
-
-        ChineseDelight.LOGGER.info("Created OilCookingPotRecipe: {}", id);
-        ChineseDelight.LOGGER.info("  Input: {}", ingredient);
-        ChineseDelight.LOGGER.info("  Result1: {} x{}", result1.getItem().getDescriptionId(), result1.getCount());
-        ChineseDelight.LOGGER.info("  Result2: {} x{}", result2.getItem().getDescriptionId(), result2.getCount());
-        ChineseDelight.LOGGER.info("  CookingTime: {}, Experience: {}", cookingTime, experience);
     }
 
     // 获取输入材料
