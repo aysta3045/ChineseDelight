@@ -16,7 +16,6 @@ public class ModCreativeTabs
 
     public static final RegistryObject<CreativeModeTab> CHINESE_DELIGHT_TAB = CREATIVE_TABS.register("chinesedelight_tab",
             () -> CreativeModeTab.builder()
-                    .withTabsBefore(CreativeModeTabs.COMBAT)
                     .title(Component.translatable("itemGroup." + ChineseDelight.MODID + ".chinesedelight_tab"))
                     .icon(() -> new ItemStack(Items.COOKED_CHICKEN))
                     .displayItems((parameters, output) -> {
