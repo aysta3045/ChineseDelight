@@ -40,4 +40,8 @@ public class ModItems
     // 牛油块
     public static final RegistryObject<Item> BEEF_TALLOW_BLOCK = ITEMS.register("beef_tallow_block",
             () -> new BlockItem(ModBlocks.BEEF_TALLOW_BLOCK.get(), new Item.Properties()));
+
+    // 生鸭肉
+    // 鸭毛
+    // 熟鸭肉
 }
