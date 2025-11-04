@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "chinesedelight:duck_meat"
+  },
+  "result": "chinesedelight:cooked_duck_meat",
+  "experience": 0.35,
+  "cookingtime": 100
+}

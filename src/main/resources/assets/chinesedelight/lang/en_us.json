@@ -12,5 +12,8 @@
   "item.chinesedelight.sesame": "Sesame",
   "item.chinesedelight.sesame_bale": "Bale of Sesame Spikes",
   "item.chinesedelight.sesame_spike": "Sesame Spike",
-  "itemGroup.chinesedelight.chinesedelight_tab": "Chinese Delight"
+  "itemGroup.chinesedelight.chinesedelight_tab": "Chinese Delight",
+  "item.chinesedelight.cooked_duck_meat": "Cooked Duck Meat",
+  "item.chinesedelight.duck_meat": "Duck Meat",
+  "item.chinesedelight.duck_feather": "Duck Feather"
 }

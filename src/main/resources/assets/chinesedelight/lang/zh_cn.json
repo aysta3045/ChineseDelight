@@ -12,5 +12,8 @@
   "item.chinesedelight.sesame": "芝麻",
   "item.chinesedelight.sesame_bale": "一捆芝麻穗",
   "item.chinesedelight.sesame_spike": "芝麻穗",
-  "itemGroup.chinesedelight.chinesedelight_tab": "中式乐事"
+  "itemGroup.chinesedelight.chinesedelight_tab": "中式乐事",
+  "item.chinesedelight.cooked_duck_meat": "熟鸭肉",
+  "item.chinesedelight.duck_meat": "生鸭肉",
+  "item.chinesedelight.duck_feather": "鸭毛"
 }

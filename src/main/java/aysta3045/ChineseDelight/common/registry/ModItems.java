@@ -10,7 +10,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModItems
 {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ChineseDelight.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, aysta3045.ChineseDelight.ChineseDelight.MODID);
     // 注册物品
 
     // 热干面
@@ -42,6 +42,14 @@ public class ModItems
             () -> new BlockItem(ModBlocks.BEEF_TALLOW_BLOCK.get(), new Item.Properties()));
 
     // 生鸭肉
-    // 鸭毛
+    public static final RegistryObject<Item> DUCK_MEAT = ITEMS.register("duck_meat",
+            DuckMeatItem::new);
+
     // 熟鸭肉
+    public static final RegistryObject<Item> COOKED_DUCK_MEAT = ITEMS.register("cooked_duck_meat",
+            CookedDuckMeatItem::new);
+
+    // 鸭毛
+    public static final RegistryObject<Item> DUCK_FEATHER = ITEMS.register("duck_feather",
+            () -> new DuckFeatherItem(new Item.Properties()));
 }
