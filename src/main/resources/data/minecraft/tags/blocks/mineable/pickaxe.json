@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "chinesedelight:oil_cooking_pot"
+    "chinesedelight:oil_cooking_pot",
+    "chinesedelight:fermentation_jar"
   ]
 }

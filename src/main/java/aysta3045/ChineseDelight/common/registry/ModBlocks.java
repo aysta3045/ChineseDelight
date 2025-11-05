@@ -26,19 +26,39 @@ public class ModBlocks {
 
     // 一捆芝麻穗
     public static final RegistryObject<Block> SESAME_BALE = BLOCKS.register("sesame_bale",
-            SesameBaleBlock::new);
+            () -> new SesameBaleBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(0.5f)
+                    .sound(SoundType.GRASS)
+                    .ignitedByLava() // 可以被岩浆点燃
+            ));
 
     // 熬油锅
     public static final RegistryObject<Block> OIL_COOKING_POT = BLOCKS.register("oil_cooking_pot",
             () -> new OilCookingPotBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE)
-                    .strength(3.0F,4.8F)
+                    .strength(3.0F,4.8F) // 硬度和抗爆能力
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> state.getValue(OilCookingPotBlock.LIT) ? 13 : 0)
                     .sound(SoundType.STONE)));
 
     //牛油块
     public static final RegistryObject<Block> BEEF_TALLOW_BLOCK = BLOCKS.register("beef_tallow_block",
-            BeefTallowBlock::new);
+            () -> new BeefTallowBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_YELLOW) // 地图颜色
+                    .strength(0.8f, 2.5f) // 硬度、爆炸抗性
+                    .friction(0.8f) // 摩擦力（比冰高，比普通方块略滑）
+                    .speedFactor(0.95f) // 移动速度因子（略慢）
+                    .sound(SoundType.SLIME_BLOCK)
+            ));
 
+    // 发酵罐
+    public static final RegistryObject<Block> FERMENTATION_JAR = BLOCKS.register("fermentation_jar",
+            () -> new FermentationJarBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                    .strength(1.5f, 3.0f) // 中等硬度
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion() // 无遮挡，允许看到罐子内部
+                    .sound(SoundType.GLASS)
+            ));
 }

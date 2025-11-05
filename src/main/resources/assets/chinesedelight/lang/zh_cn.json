@@ -15,5 +15,7 @@
   "itemGroup.chinesedelight.chinesedelight_tab": "中式乐事",
   "item.chinesedelight.cooked_duck_meat": "熟鸭肉",
   "item.chinesedelight.duck_meat": "生鸭肉",
-  "item.chinesedelight.duck_feather": "鸭毛"
+  "item.chinesedelight.duck_feather": "鸭毛",
+  "block.chinesedelight.fermentation_jar": "发酵罐",
+  "item.chinesedelight.fermentation_jar": "发酵罐"
 }

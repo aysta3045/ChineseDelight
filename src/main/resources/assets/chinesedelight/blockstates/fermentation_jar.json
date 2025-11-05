@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "chinesedelight:block/fermentation_jar" },
+    "facing=south": { "model": "chinesedelight:block/fermentation_jar", "y": 180 },
+    "facing=west": { "model": "chinesedelight:block/fermentation_jar", "y": 270 },
+    "facing=east": { "model": "chinesedelight:block/fermentation_jar", "y": 90 }
+  }
+}

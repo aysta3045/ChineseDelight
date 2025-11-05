@@ -52,4 +52,8 @@ public class ModItems
     // 鸭毛
     public static final RegistryObject<Item> DUCK_FEATHER = ITEMS.register("duck_feather",
             () -> new DuckFeatherItem(new Item.Properties()));
+
+    // 发酵罐
+    public static final RegistryObject<Item> FERMENTATION_JAR = ITEMS.register("fermentation_jar",
+            () -> new BlockItem(ModBlocks.FERMENTATION_JAR.get(), new Item.Properties()));
 }

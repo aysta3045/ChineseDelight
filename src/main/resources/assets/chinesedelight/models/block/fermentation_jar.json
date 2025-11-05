@@ -1,0 +1,23 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "chinesedelight:block/fermentation_jar_side",
+    "side": "chinesedelight:block/fermentation_jar_side",
+    "top": "chinesedelight:block/fermentation_jar_top",
+    "bottom": "chinesedelight:block/fermentation_jar_bottom"
+  },
+  "elements": [
+    {
+      "from": [3, 0, 3],
+      "to": [13, 12, 13],
+      "faces": {
+        "down": {"texture": "#bottom", "cullface": "down"},
+        "up": {"texture": "#top", "cullface": "up"},
+        "north": {"texture": "#side", "cullface": "north"},
+        "south": {"texture": "#side", "cullface": "south"},
+        "west": {"texture": "#side", "cullface": "west"},
+        "east": {"texture": "#side", "cullface": "east"}
+      }
+    }
+  ]
+}

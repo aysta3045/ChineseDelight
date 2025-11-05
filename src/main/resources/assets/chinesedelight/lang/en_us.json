@@ -15,5 +15,7 @@
   "itemGroup.chinesedelight.chinesedelight_tab": "Chinese Delight",
   "item.chinesedelight.cooked_duck_meat": "Cooked Duck Meat",
   "item.chinesedelight.duck_meat": "Duck Meat",
-  "item.chinesedelight.duck_feather": "Duck Feather"
+  "item.chinesedelight.duck_feather": "Duck Feather",
+  "block.chinesedelight.fermentation_jar": "Fermentation Jar",
+  "item.chinesedelight.fermentation_jar": "Fermentation Jar"
 }
