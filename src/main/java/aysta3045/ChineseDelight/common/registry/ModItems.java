@@ -63,4 +63,6 @@ public class ModItems
             () -> new ForgeSpawnEggItem(ModEntityTypes.CHINESE_DELIGHT_DUCK,
                     0xA0522D, 0xFFD700, // 棕色身体，金色喙
                     new Item.Properties()));
+
+    // 鸭蛋
 }
