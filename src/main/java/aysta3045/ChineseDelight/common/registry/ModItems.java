@@ -4,6 +4,7 @@ import aysta3045.ChineseDelight.ChineseDelight;
 import aysta3045.ChineseDelight.common.items.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -56,4 +57,7 @@ public class ModItems
     // 发酵罐
     public static final RegistryObject<Item> FERMENTATION_JAR = ITEMS.register("fermentation_jar",
             () -> new BlockItem(ModBlocks.FERMENTATION_JAR.get(), new Item.Properties()));
+
+    // 鸭刷怪蛋
+
 }
