@@ -59,5 +59,8 @@ public class ModItems
             () -> new BlockItem(ModBlocks.FERMENTATION_JAR.get(), new Item.Properties()));
 
     // 鸭刷怪蛋
-
+    public static final RegistryObject<Item> CHINESE_DELIGHT_DUCK_SPAWN_EGG = ITEMS.register("chinese_delight_duck_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.CHINESE_DELIGHT_DUCK,
+                    0xA0522D, 0xFFD700, // 棕色身体，金色喙
+                    new Item.Properties()));
 }

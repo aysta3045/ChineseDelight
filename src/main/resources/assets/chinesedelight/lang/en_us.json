@@ -17,5 +17,7 @@
   "item.chinesedelight.duck_meat": "Duck Meat",
   "item.chinesedelight.duck_feather": "Duck Feather",
   "block.chinesedelight.fermentation_jar": "Fermentation Jar",
-  "item.chinesedelight.fermentation_jar": "Fermentation Jar"
+  "item.chinesedelight.fermentation_jar": "Fermentation Jar",
+  "entity.chinesedelight.chinese_delight_duck": "Duck",
+  "item.chinesedelight.chinese_delight_duck_spawn_egg": "Duck Spawn Egg"
 }

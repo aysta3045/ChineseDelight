@@ -18,7 +18,7 @@ public class ModFoods {
 
     // 熟鸭肉
     public static final FoodProperties COOKED_DUCK_MEAT = new FoodProperties.Builder()
-            .nutrition(3)
-            .saturationMod(0.3f)
+            .nutrition(7)
+            .saturationMod(7f)
             .build();
 }

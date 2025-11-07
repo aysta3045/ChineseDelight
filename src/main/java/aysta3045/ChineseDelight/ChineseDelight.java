@@ -41,6 +41,7 @@ public class ChineseDelight
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
         ModCreativeTabs.CREATIVE_TABS.register(modEventBus);
 
+
         MinecraftForge.EVENT_BUS.register(this);
     }
 }
