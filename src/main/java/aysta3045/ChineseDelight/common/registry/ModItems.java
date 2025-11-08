@@ -1,6 +1,5 @@
 package aysta3045.ChineseDelight.common.registry;
 
-import aysta3045.ChineseDelight.ChineseDelight;
 import aysta3045.ChineseDelight.common.items.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -52,7 +51,7 @@ public class ModItems
 
     // 鸭毛
     public static final RegistryObject<Item> DUCK_FEATHER = ITEMS.register("duck_feather",
-            () -> new DuckFeatherItem(new Item.Properties()));
+            () -> new DuckEggItem(new Item.Properties()));
 
     // 发酵罐
     public static final RegistryObject<Item> FERMENTATION_JAR = ITEMS.register("fermentation_jar",
@@ -65,4 +64,6 @@ public class ModItems
                     new Item.Properties()));
 
     // 鸭蛋
+    public static final RegistryObject<Item> DUCK_EGG = ITEMS.register("duck_egg",
+            () -> new DuckEggItem(new Item.Properties()));
 }

@@ -1,11 +1,11 @@
-// ChineseDelightDuck.java
 package aysta3045.ChineseDelight.common.entity;
 
+import aysta3045.ChineseDelight.common.registry.ModEntityTypes;
 import aysta3045.ChineseDelight.common.registry.ModItems;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -18,11 +18,17 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.LivingEntity;
 
 public class ChineseDelightDuck extends Chicken {
     private static final EntityDataAccessor<Boolean> DATA_IS_CHINESE_DELIGHT_DUCK =
             SynchedEntityData.defineId(ChineseDelightDuck.class, EntityDataSerializers.BOOLEAN);
+
+    // 添加自定义的蛋计时器
+    private int duckEggTime = this.random.nextInt(6000) + 6000;
 
     public ChineseDelightDuck(EntityType<? extends Chicken> entityType, Level level) {
         super(entityType, level);
@@ -50,12 +56,16 @@ public class ChineseDelightDuck extends Chicken {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("IsChineseDelightDuck", this.isChineseDelightDuck());
+        compound.putInt("DuckEggTime", this.duckEggTime);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setChineseDelightDuck(compound.getBoolean("IsChineseDelightDuck"));
+        if (compound.contains("DuckEggTime")) {
+            this.duckEggTime = compound.getInt("DuckEggTime");
+        }
     }
 
     public boolean isChineseDelightDuck() {
@@ -94,6 +104,54 @@ public class ChineseDelightDuck extends Chicken {
                 stack.getItem() == Items.BEETROOT_SEEDS;
     }
 
+    // 修复交配生成小鸡的bug - 重写getBreedOffspring方法
+    @Override
+    public Chicken getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
+        // 确保返回的是鸭子实体而不是鸡
+        return ModEntityTypes.CHINESE_DELIGHT_DUCK.get().create(level);
+    }
+
+    @Override
+    public void aiStep() {
+        // 完全重写aiStep方法，只调用LivingEntity的aiStep，不调用Chicken的
+        // 这是彻底解决下鸡蛋问题的关键
+        super.aiStep(); // 调用LivingEntity的aiStep
+
+        // 重置父类的eggTime，防止父类Chicken下鸡蛋
+        if (this.eggTime <= 100) {
+            this.eggTime = this.random.nextInt(6000) + 6000;
+        }
+
+        // 翅膀动画逻辑（与原版鸡相同）
+        this.oFlap = this.flap;
+        this.oFlapSpeed = this.flapSpeed;
+        this.flapSpeed += (this.onGround() ? -1.0F : 4.0F) * 0.3F;
+        this.flapSpeed = Mth.clamp(this.flapSpeed, 0.0F, 1.0F);
+
+        if (!this.onGround() && this.flapping < 1.0F) {
+            this.flapping = 1.0F;
+        }
+
+        this.flapping *= 0.9F;
+        Vec3 vec3 = this.getDeltaMovement();
+
+        if (!this.onGround() && vec3.y < 0.0D) {
+            this.setDeltaMovement(vec3.multiply(1.0D, 0.6D, 1.0D));
+        }
+
+        this.flap += this.flapping * 2.0F;
+
+        // 下鸭蛋逻辑 - 只下鸭蛋，不下鸡蛋
+        if (!this.level().isClientSide && this.isAlive() && !this.isBaby() && --this.duckEggTime <= 0) {
+            this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+
+            // 下鸭蛋
+            this.spawnAtLocation(ModItems.DUCK_EGG.get());
+
+            this.duckEggTime = this.random.nextInt(6000) + 6000; // 5-10分钟下一次蛋
+        }
+    }
+
     @Override
     protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
@@ -105,10 +163,38 @@ public class ChineseDelightDuck extends Chicken {
             this.spawnAtLocation(ModItems.DUCK_MEAT.get());
         }
 
-        // 神秘抢夺附魔
-        int featherCount = 1 + this.random.nextInt(2) + (looting > 0 ? this.random.nextInt(looting + 1) : 0);
-        this.spawnAtLocation(ModItems.DUCK_FEATHER.get(), featherCount);
+        // 掉落鸭毛
+        dropDuckFeathers(looting);
     }
 
+    private void dropDuckFeathers(int looting) {
+        // 基础掉落数量
+        int baseCount = 1;
 
+        // 随机额外掉落（25%概率多掉1个）
+        if (this.random.nextFloat() < 0.25f) {
+            baseCount++;
+        }
+
+        // 抢夺附魔效果
+        int lootingBonus = 0;
+        if (looting > 0) {
+            lootingBonus = this.random.nextInt(looting + 1);
+        }
+
+        // 总掉落数量
+        int totalCount = baseCount + lootingBonus;
+
+        // 确保至少掉落1个
+        if (totalCount < 1) {
+            totalCount = 1;
+        }
+
+        // 限制最大掉落数量
+        if (totalCount > 5) {
+            totalCount = 5;
+        }
+
+        this.spawnAtLocation(ModItems.DUCK_FEATHER.get(), totalCount);
+    }
 }

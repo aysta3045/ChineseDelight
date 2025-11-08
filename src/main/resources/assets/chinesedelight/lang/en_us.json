@@ -19,5 +19,6 @@
   "block.chinesedelight.fermentation_jar": "Fermentation Jar",
   "item.chinesedelight.fermentation_jar": "Fermentation Jar",
   "entity.chinesedelight.chinese_delight_duck": "Duck",
-  "item.chinesedelight.chinese_delight_duck_spawn_egg": "Duck Spawn Egg"
+  "item.chinesedelight.chinese_delight_duck_spawn_egg": "Duck Spawn Egg",
+  "item.chinesedelight.duck_egg": "Duck Egg"
 }
