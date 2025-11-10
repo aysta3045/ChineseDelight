@@ -118,7 +118,7 @@ public class ChineseDelightDuck extends Chicken {
         super.aiStep(); // 调用LivingEntity的aiStep
 
         // 重置父类的eggTime，防止父类Chicken下鸡蛋
-        if (this.eggTime <= 100) {
+        if (this.eggTime <= 10) {
             this.eggTime = this.random.nextInt(6000) + 6000;
         }
 
