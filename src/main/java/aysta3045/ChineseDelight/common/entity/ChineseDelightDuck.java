@@ -21,7 +21,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.LivingEntity;
 
 public class ChineseDelightDuck extends Chicken {
     private static final EntityDataAccessor<Boolean> DATA_IS_CHINESE_DELIGHT_DUCK =
