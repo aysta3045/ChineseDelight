@@ -11,7 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class ChineseDelightDuckModel extends EntityModel<ChineseDelightDuck> {
-    // 修复了LAYER_LOCATION的资源位置
     public static final ModelLayerLocation LAYER_LOCATION =
             new ModelLayerLocation(new ResourceLocation(ChineseDelight.MODID, "chinese_delight_duck"), "main");
 
@@ -68,14 +67,17 @@ public class ChineseDelightDuckModel extends EntityModel<ChineseDelightDuck> {
         this.leg0.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         this.leg1.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
 
-        // 翅膀拍打动画
-        this.wing0.zRot = ageInTicks;
-        this.wing1.zRot = -ageInTicks;
-
-        // 更自然的翅膀动画（类似原版鸡）
-        float wingMovement = Mth.sin(ageInTicks) * 0.2F;
-        this.wing0.yRot = wingMovement;
-        this.wing1.yRot = -wingMovement;
+        // 翅膀动画 - 在空中时持续拍打，加大幅度
+        if (!entity.onGround()) {
+            // 使用较慢的频率和较大的幅度
+            float wingFlap = Mth.sin(ageInTicks * 1.8F) * 1.2F; // 幅度从0.6F增加到1.2F
+            this.wing0.zRot = wingFlap;
+            this.wing1.zRot = -wingFlap;
+        } else {
+            // 在地面时，翅膀保持静止
+            this.wing0.zRot = 0.0F;
+            this.wing1.zRot = 0.0F;
+        }
     }
 
     @Override

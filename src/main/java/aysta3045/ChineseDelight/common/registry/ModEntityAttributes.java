@@ -18,7 +18,7 @@ public class ModEntityAttributes {
                 AttributeSupplier.builder()
                         .add(Attributes.MAX_HEALTH, 4.0D)           // 生命值
                         .add(Attributes.MOVEMENT_SPEED, 0.25D)      // 移动速度
-                        .add(ForgeMod.ENTITY_GRAVITY.get(), 0.08D)  // 重力值
+                        .add(ForgeMod.ENTITY_GRAVITY.get(), 0.5D)  // 重力值
                         .add(Attributes.KNOCKBACK_RESISTANCE, 0.0D) // 受击击退属性
                         .add(Attributes.FOLLOW_RANGE, 16.0D)        // 跟随范围
                         .add(Attributes.ATTACK_DAMAGE, 0.0D)        // 攻击伤害
