@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "chinesedelight:item/sesame"
+    "layer0": "chinesedelight:item/glass_jar"
   }
 }

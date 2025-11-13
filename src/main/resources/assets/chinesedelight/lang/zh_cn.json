@@ -20,5 +20,7 @@
   "item.chinesedelight.fermentation_jar": "发酵罐",
   "entity.chinesedelight.chinese_delight_duck": "鸭",
   "item.chinesedelight.chinese_delight_duck_spawn_egg": "鸭刷怪蛋",
-  "item.chinesedelight.duck_egg": "鸭蛋"
+  "item.chinesedelight.duck_egg": "鸭蛋",
+  "item.chinesedelight.glass_jar": "玻璃罐",
+  "item.chinesedelight.sesame_jar": "芝麻罐"
 }

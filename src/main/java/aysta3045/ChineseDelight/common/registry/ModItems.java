@@ -66,4 +66,12 @@ public class ModItems
     // 鸭蛋
     public static final RegistryObject<Item> DUCK_EGG = ITEMS.register("duck_egg",
             () -> new DuckEggItem(new Item.Properties()));
+
+    // 玻璃罐
+    public static final RegistryObject<Item> GLASS_JAR = ITEMS.register("glass_jar",
+            () -> new SesameJarItem(new Item.Properties()));
+
+    // 芝麻罐
+    public static final RegistryObject<Item> SESAME_JAR = ITEMS.register("sesame_jar",
+            () -> new SesameJarItem(new Item.Properties()));
 }
