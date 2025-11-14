@@ -25,10 +25,6 @@ public class ModItems
     public static final RegistryObject<Item> SESAME_SPIKE = ITEMS.register("sesame_spike",
             () -> new SesameSpikeItem(new Item.Properties()));
 
-    // 干芝麻穗
-    public static final RegistryObject<Item> DRIED_SESAME_SPIKE = ITEMS.register("dried_sesame_spike",
-            () -> new DriedSesameSpikeItem(new Item.Properties()));
-
     // 一捆芝麻穗
     public static final RegistryObject<Item> SESAME_BALE = ITEMS.register("sesame_bale",
             () -> new BlockItem(ModBlocks.SESAME_BALE.get(), new Item.Properties()));
