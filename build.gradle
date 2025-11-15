@@ -39,12 +39,16 @@ minecraft {
         client {
             property 'forge.enabledGameTestNamespaces', mod_id
             args '--mixin', "${mod_id}.mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
 
         server {
             property 'forge.enabledGameTestNamespaces', mod_id
             args '--nogui'
             args '--mixin', "${mod_id}.mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
 
         gameTestServer {
@@ -90,6 +94,7 @@ dependencies {
 
     implementation(annotationProcessor("org.spongepowered:mixin:0.8.5:processor"))
     testAnnotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -141,8 +146,11 @@ tasks.withType(JavaCompile).configureEach {
 
 // Mixin 配置
 mixin {
-    config "${mod_id}.mixins.json"
-    debug.export = true
+    // Mixin 配置
+    add sourceSets.main, "chinesedelight.refmap.json"
+    config "chinesedelight.mixins.json"
+
+    // 启用导出和调试
     debug.verbose = true
-    debug.hotSwaps = true
+    debug.export = true
 }

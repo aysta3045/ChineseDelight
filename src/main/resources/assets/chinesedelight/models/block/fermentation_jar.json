@@ -1,23 +1,80 @@
 {
-  "parent": "block/block",
-  "textures": {
-    "particle": "chinesedelight:block/fermentation_jar_side",
-    "side": "chinesedelight:block/fermentation_jar_side",
-    "top": "chinesedelight:block/fermentation_jar_top",
-    "bottom": "chinesedelight:block/fermentation_jar_bottom"
-  },
-  "elements": [
-    {
-      "from": [3, 0, 3],
-      "to": [13, 12, 13],
-      "faces": {
-        "down": {"texture": "#bottom", "cullface": "down"},
-        "up": {"texture": "#top", "cullface": "up"},
-        "north": {"texture": "#side", "cullface": "north"},
-        "south": {"texture": "#side", "cullface": "south"},
-        "west": {"texture": "#side", "cullface": "west"},
-        "east": {"texture": "#side", "cullface": "east"}
-      }
-    }
-  ]
+	"format_version": "1.21.6",
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"2": "chinesedelight:block/fermentation_jar"
+	},
+	"elements": [
+		{
+			"name": "Jar_body",
+			"from": [1, 4, 1],
+			"to": [15, 12, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [1, 4, 1]},
+			"faces": {
+				"north": {"uv": [0, 7, 3.5, 9], "texture": "#2"},
+				"east": {"uv": [7, 0, 10.5, 2], "texture": "#2"},
+				"south": {"uv": [7, 2, 10.5, 4], "texture": "#2"},
+				"west": {"uv": [3.5, 7, 7, 9], "texture": "#2"},
+				"up": {"uv": [3.5, 3.5, 0, 0], "texture": "#2"},
+				"down": {"uv": [3.5, 3.5, 0, 7], "texture": "#2"}
+			}
+		},
+		{
+			"name": "Jar_bottom",
+			"from": [3, 0, 3],
+			"to": [13, 4, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 0, 3]},
+			"faces": {
+				"north": {"uv": [5, 9, 7.5, 10], "texture": "#2"},
+				"east": {"uv": [7.5, 9, 10, 10], "texture": "#2"},
+				"south": {"uv": [9.5, 4, 12, 5], "texture": "#2"},
+				"west": {"uv": [9.5, 5, 12, 6], "texture": "#2"},
+				"up": {"uv": [9.5, 6.5, 7, 4], "texture": "#2"},
+				"down": {"uv": [9.5, 6.5, 7, 9], "texture": "#2"}
+			}
+		},
+		{
+			"name": "Lid",
+			"from": [5, 16, 5],
+			"to": [11, 18, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 16, 5]},
+			"faces": {
+				"north": {"uv": [10.5, 2, 12, 2.5], "texture": "#2"},
+				"east": {"uv": [10.5, 2.5, 12, 3], "texture": "#2"},
+				"south": {"uv": [10.5, 3, 12, 3.5], "texture": "#2"},
+				"west": {"uv": [10.5, 3.5, 12, 4], "texture": "#2"},
+				"up": {"uv": [11, 7.5, 9.5, 6], "texture": "#2"},
+				"down": {"uv": [11, 7.5, 9.5, 9], "texture": "#2"}
+			}
+		},
+		{
+			"name": "Jar_top",
+			"from": [3, 12, 3],
+			"to": [13, 14, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 12, 3]},
+			"faces": {
+				"north": {"uv": [10.5, 0, 13, 0.5], "texture": "#2"},
+				"east": {"uv": [10.5, 0.5, 13, 1], "texture": "#2"},
+				"south": {"uv": [10.5, 1, 13, 1.5], "texture": "#2"},
+				"west": {"uv": [10.5, 1.5, 13, 2], "texture": "#2"},
+				"up": {"uv": [2.5, 11.5, 0, 9], "texture": "#2"},
+				"down": {"uv": [5, 9, 2.5, 11.5], "texture": "#2"}
+			}
+		},
+		{
+			"name": "Jar_mouth",
+			"from": [1, 14, 1],
+			"to": [15, 16, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [1, 14, 1]},
+			"faces": {
+				"north": {"uv": [5, 10, 8.5, 10.5], "texture": "#2"},
+				"east": {"uv": [8.5, 10, 12, 10.5], "texture": "#2"},
+				"south": {"uv": [10, 9, 13.5, 9.5], "texture": "#2"},
+				"west": {"uv": [10, 9.5, 13.5, 10], "texture": "#2"},
+				"up": {"uv": [7, 3.5, 3.5, 0], "texture": "#2"},
+				"down": {"uv": [7, 3.5, 3.5, 7], "texture": "#2"}
+			}
+		}
+	]
 }
