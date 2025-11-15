@@ -60,10 +60,4 @@ public class FermentationJarBlock extends Block {
     public boolean useShapeForLightOcclusion(BlockState state) {
         return true;
     }
-
-    // 确保空手破坏时掉落自身
-    @Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        return Collections.singletonList(new ItemStack(this));
-    }
 }
