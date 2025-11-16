@@ -55,8 +55,8 @@ public class ModBlocks {
     // 发酵罐
     public static final RegistryObject<Block> FERMENTATION_JAR = BLOCKS.register("fermentation_jar",
             () -> new FermentationJarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
-                    .strength(1.5f, 3.0f) // 中等硬度
+                    .mapColor(MapColor.COLOR_BROWN)
+                    .strength(1.1f, 3.0f) // 中等硬度
                     .requiresCorrectToolForDrops()
                     .noOcclusion() // 无遮挡，允许看到罐子内部
                     .sound(SoundType.GLASS)

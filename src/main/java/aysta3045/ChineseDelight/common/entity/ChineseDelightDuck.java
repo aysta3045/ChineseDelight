@@ -2,7 +2,6 @@ package aysta3045.ChineseDelight.common.entity;
 
 import aysta3045.ChineseDelight.common.registry.ModEntityTypes;
 import aysta3045.ChineseDelight.common.registry.ModItems;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +17,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 
@@ -112,35 +110,15 @@ public class ChineseDelightDuck extends Chicken {
 
     @Override
     public void aiStep() {
-        // 完全重写aiStep方法，只调用LivingEntity的aiStep，不调用Chicken的
-        // 这是彻底解决下鸡蛋问题的关键
-        super.aiStep(); // 调用LivingEntity的aiStep
+        // 先调用父类的aiStep，但阻止其下鸡蛋的逻辑
+        super.aiStep();
 
-        // 重置父类的eggTime，防止父类Chicken下鸡蛋
-        if (this.eggTime <= 10) {
+        // 立即重置父类的eggTime，防止父类Chicken下鸡蛋
+        if (this.eggTime < 10) { // 如果eggTime接近触发下蛋
             this.eggTime = this.random.nextInt(6000) + 6000;
         }
 
-        // 翅膀动画逻辑（与原版鸡相同）
-        this.oFlap = this.flap;
-        this.oFlapSpeed = this.flapSpeed;
-        this.flapSpeed += (this.onGround() ? -1.0F : 4.0F) * 0.3F;
-        this.flapSpeed = Mth.clamp(this.flapSpeed, 0.0F, 1.0F);
-
-        if (!this.onGround() && this.flapping < 1.0F) {
-            this.flapping = 1.0F;
-        }
-
-        this.flapping *= 0.9F;
-        Vec3 vec3 = this.getDeltaMovement();
-
-        if (!this.onGround() && vec3.y < 0.0D) {
-            this.setDeltaMovement(vec3.multiply(1.0D, 0.6D, 1.0D));
-        }
-
-        this.flap += this.flapping * 2.0F;
-
-        // 下鸭蛋逻辑 - 只下鸭蛋，不下鸡蛋
+        // 我们自己的下鸭蛋逻辑
         if (!this.level().isClientSide && this.isAlive() && !this.isBaby() && --this.duckEggTime <= 0) {
             this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
 
@@ -149,6 +127,13 @@ public class ChineseDelightDuck extends Chicken {
 
             this.duckEggTime = this.random.nextInt(6000) + 6000; // 5-10分钟下一次蛋
         }
+    }
+
+    // 添加防止摔伤的方法
+    @Override
+    public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+        // 返回false表示不受到摔落伤害
+        return false;
     }
 
     @Override
