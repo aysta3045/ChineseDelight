@@ -1,6 +1,12 @@
 {
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/cube",
   "textures": {
-    "all": "chinesedelight:block/beef_tallow_block"
+    "particle": "chinesedelight:block/beef_tallow_block_side",
+    "down": "chinesedelight:block/beef_tallow_block_top_bottom",
+    "up": "chinesedelight:block/beef_tallow_block_top_bottom",
+    "north": "chinesedelight:block/beef_tallow_block_side",
+    "south": "chinesedelight:block/beef_tallow_block_side",
+    "west": "chinesedelight:block/beef_tallow_block_side",
+    "east": "chinesedelight:block/beef_tallow_block_side"
   }
 }
