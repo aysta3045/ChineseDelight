@@ -1,4 +1,4 @@
-package aysta3045.ChineseDelight.common.block.entity;
+package aysta3045.ChineseDelight.common.blocks.entity;
 
 import aysta3045.ChineseDelight.common.menu.OilCookingPotMenu;
 import aysta3045.ChineseDelight.common.recipe.OilCookingPotRecipe;

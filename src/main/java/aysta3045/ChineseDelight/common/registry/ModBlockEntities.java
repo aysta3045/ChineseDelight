@@ -1,7 +1,7 @@
 package aysta3045.ChineseDelight.common.registry;
 
 import aysta3045.ChineseDelight.ChineseDelight;
-import aysta3045.ChineseDelight.common.block.entity.OilCookingPotBlockEntity;
+import aysta3045.ChineseDelight.common.blocks.entity.OilCookingPotBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

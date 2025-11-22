@@ -1,6 +1,6 @@
 package aysta3045.ChineseDelight.common.blocks;
 
-import aysta3045.ChineseDelight.common.block.entity.OilCookingPotBlockEntity;
+import aysta3045.ChineseDelight.common.blocks.entity.OilCookingPotBlockEntity;
 import aysta3045.ChineseDelight.common.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

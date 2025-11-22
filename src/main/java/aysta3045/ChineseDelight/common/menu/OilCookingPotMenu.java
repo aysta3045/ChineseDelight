@@ -1,6 +1,6 @@
 package aysta3045.ChineseDelight.common.menu;
 
-import aysta3045.ChineseDelight.common.block.entity.OilCookingPotBlockEntity;
+import aysta3045.ChineseDelight.common.blocks.entity.OilCookingPotBlockEntity;
 import aysta3045.ChineseDelight.common.registry.ModBlocks;
 import aysta3045.ChineseDelight.common.registry.ModMenus;
 import net.minecraft.core.BlockPos;
