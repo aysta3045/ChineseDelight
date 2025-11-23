@@ -1,7 +1,7 @@
 package aysta3045.ChineseDelight.common.registry;
 
 import aysta3045.ChineseDelight.ChineseDelight;
-import aysta3045.ChineseDelight.common.recipe.OilCookingPotRecipe;
+import aysta3045.ChineseDelight.common.recipe.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -17,15 +17,17 @@ public class ModRecipes {
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES =
             DeferredRegister.create(Registries.RECIPE_TYPE, ChineseDelight.MODID);
 
+    // 熬油锅
     public static final RegistryObject<RecipeSerializer<OilCookingPotRecipe>> OIL_COOKING_SERIALIZER =
             SERIALIZERS.register("oil_cooking", () -> OilCookingPotRecipe.Serializer.INSTANCE);
-
     public static final RegistryObject<RecipeType<OilCookingPotRecipe>> OIL_COOKING_TYPE =
             RECIPE_TYPES.register("oil_cooking",
                     () -> RecipeType.simple(new ResourceLocation(ChineseDelight.MODID, "oil_cooking")));
 
-    static {
-        ChineseDelight.LOGGER.info("ModRecipes static initializer - Type: {}, Serializer: {}",
-                OIL_COOKING_TYPE.getId(), OIL_COOKING_SERIALIZER.getId());
-    }
+    // 发酵罐
+    public static final RegistryObject<RecipeSerializer<FermentationRecipe>> FERMENTATION_SERIALIZER =
+            SERIALIZERS.register("fermentation", () -> FermentationRecipe.Serializer.INSTANCE);
+    public static final RegistryObject<RecipeType<FermentationRecipe>> FERMENTATION_TYPE =
+            RECIPE_TYPES.register("fermentation", () -> FermentationRecipe.Type.INSTANCE);
+
 }

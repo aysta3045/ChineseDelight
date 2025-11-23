@@ -21,4 +21,22 @@ public class ModFoods {
             .nutrition(7)
             .saturationMod(7f)
             .build();
+
+    // 白萝卜
+    public static final FoodProperties WHITE_RADISH = new FoodProperties.Builder()
+            .nutrition(2)
+            .saturationMod(1f)
+            .build();
+
+    // 白萝卜块
+    public static final FoodProperties WHITE_RADISH_CHUNK = new FoodProperties.Builder()
+            .nutrition(1)
+            .saturationMod(0.5f)
+            .build();
+
+    // 腌白萝卜块
+    public static final FoodProperties PLCKLED_WHITE_RADISH_CHUNK = new FoodProperties.Builder()
+            .nutrition(3)
+            .saturationMod(4f)
+            .build();
 }

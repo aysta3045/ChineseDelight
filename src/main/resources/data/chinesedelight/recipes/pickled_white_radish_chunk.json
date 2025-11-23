@@ -1,0 +1,12 @@
+{
+  "type": "chinese_delight:fermentation",
+  "ingredients": [
+    {
+      "item": "chinese_delight:white_radish_chunk"
+    }
+  ],
+  "output": {
+    "item": "chinese_delight:pickled_white_radish_chunk",
+    "count": 1
+  }
+}

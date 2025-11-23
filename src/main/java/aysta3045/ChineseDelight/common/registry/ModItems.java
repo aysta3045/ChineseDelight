@@ -43,7 +43,7 @@ public class ModItems
 
     // 生鸭肉
     public static final RegistryObject<Item> DUCK_MEAT = ITEMS.register("duck_meat",
-            DuckMeatItem::new);
+            WhiteRadishItem::new);
 
     // 熟鸭肉
     public static final RegistryObject<Item> COOKED_DUCK_MEAT = ITEMS.register("cooked_duck_meat",
@@ -74,4 +74,16 @@ public class ModItems
     // 芝麻罐
     public static final RegistryObject<Item> SESAME_JAR = ITEMS.register("sesame_jar",
             () -> new SesameJarItem(new Item.Properties()));
+
+    // 白萝卜
+    public static final RegistryObject<Item> WHITE_RADISH = ITEMS.register("white_radish",
+            WhiteRadishItem::new);
+
+    // 白萝卜块
+    public static final RegistryObject<Item> WHITE_RADISH_CHUNK = ITEMS.register("white_radish_chunk",
+            WhiteRadishChunkItem::new);
+
+    // 腌白萝卜块
+    public static final RegistryObject<Item> PICKLED_WHITE_RADISH_CHUNK = ITEMS.register("pickled_white_radish_chunk",
+            PickledWhiteRadishChunkItem::new);
 }
