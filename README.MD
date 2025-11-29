@@ -1,14 +1,14 @@
-### 中式乐事(Chinese Delight)
+### Chinese Delight
 
-## 介绍
-- 农夫乐事的扩展模组，添加了更多的中式菜品
+## Introduction
+- An extension mod for Farmer's Delight, adding more Chinese-style dishes
 
-## 注意事项
-- 如果你是玩家，可以在[Releases](https://github.com/aysta3045/ChineseDelight/releases)来下载对应版本.
-- 如果你是开发者请注意，项目构建使用gradle8.8、jdk17环境，如构建失败请手动修改/gradle/wrapper/下配置文件的构建路径
-- 在游玩或开发过程中遇见任何问题，或是遇见bug，欢迎在[issues](https://github.com/aysta3045/ChineseDelight/issues)中向我们提问
+## Notice
+- If you are a player, you can download the corresponding version from [Releases](https://github.com/aysta3045/ChineseDelight/releases).
+- If you are a developer, please note that the project is built using Gradle 8.8 and JDK 17 environment. If the build fails, please manually modify the build path in the configuration files under `/gradle/wrapper/`.
+- If you encounter any problems or bugs during gameplay or development, feel free to ask us in the [issues](https://github.com/aysta3045/ChineseDelight/issues).
 
-## 贡献者
+## Contributors
 <a href="https://github.com/aysta3045/ChineseDelight/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=aysta3045/ChineseDelight" />
 </a>
