@@ -1,3 +1,7 @@
+> 🌐 **语言选择 / Language**
+> - [English](README.md)
+> - [简体中文](README_zh.md)
+
 ### Chinese Delight
 
 ## Introduction
