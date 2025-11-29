@@ -5,4 +5,4 @@ Gitee也有同样的仓库但仅为镜像不活跃
 后续会添加各个版本的branch，按需自取
 
 获取最新进度请查看主要开发分支：aysta3045's dev
-后续更新为readme.md（暂时还不会md文件）
+后续更新为readme.md
