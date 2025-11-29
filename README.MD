@@ -1,6 +1,6 @@
 > 🌐 **语言选择 / Language**
-> - [English](README.md)
-> - [简体中文](README_zh.md)
+> - [English](README.MD)
+> - [简体中文](README_zh.MD)
 
 ### Chinese Delight
 
