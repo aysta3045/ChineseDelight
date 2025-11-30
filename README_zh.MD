@@ -16,3 +16,6 @@
 <a href="https://github.com/aysta3045/ChineseDelight/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=aysta3045/ChineseDelight" />
 </a>
+
+## GitHub Analytics
+![Analytics](https://repobeats.axiom.co/api/embed/29219d4bc4d5d99dc55a648dbe7c56d9e440e6d8.svg)
