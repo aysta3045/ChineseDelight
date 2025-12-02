@@ -53,10 +53,6 @@ public class ModItems
     public static final RegistryObject<Item> DUCK_FEATHER = ITEMS.register("duck_feather",
             () -> new DuckEggItem(new Item.Properties()));
 
-    // 发酵罐
-    public static final RegistryObject<Item> FERMENTATION_JAR = ITEMS.register("fermentation_jar",
-            () -> new BlockItem(ModBlocks.FERMENTATION_JAR.get(), new Item.Properties()));
-
     // 鸭刷怪蛋
     public static final RegistryObject<Item> CHINESE_DELIGHT_DUCK_SPAWN_EGG = ITEMS.register("chinese_delight_duck_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.CHINESE_DELIGHT_DUCK,

@@ -17,9 +17,4 @@ public class ModBlockEntities {
                     () -> BlockEntityType.Builder.of(OilCookingPotBlockEntity::new,
                             ModBlocks.OIL_COOKING_POT.get()).build(null));
 
-    // 发酵罐方块实体
-    public static final RegistryObject<BlockEntityType<FermentationJarBlockEntity>> FERMENTATION_JAR =
-            BLOCK_ENTITIES.register("fermentation_jar", () ->
-                    BlockEntityType.Builder.of(FermentationJarBlockEntity::new,
-                            ModBlocks.FERMENTATION_JAR.get()).build(null));
 }
