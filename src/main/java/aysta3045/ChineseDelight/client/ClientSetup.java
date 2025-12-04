@@ -13,8 +13,6 @@ import com.mojang.logging.LogUtils;
 @Mod.EventBusSubscriber(modid = ChineseDelight.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientSetup
 {
-    private static final Logger LOGGER = LogUtils.getLogger();
-
     public static void init(final FMLClientSetupEvent event)
     {
 
