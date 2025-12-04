@@ -82,4 +82,8 @@ public class ModItems
     // 腌白萝卜块
     public static final RegistryObject<Item> PICKLED_WHITE_RADISH_CHUNK = ITEMS.register("pickled_white_radish_chunk",
             PickledWhiteRadishChunkItem::new);
+
+    // 发酵罐
+    public static final RegistryObject<Item> FERMENTATION_JAR = ITEMS.register("fermentation_jar",
+            () -> new BlockItem(ModBlocks.FERMENTATION_JAR.get(), new Item.Properties()));
 }

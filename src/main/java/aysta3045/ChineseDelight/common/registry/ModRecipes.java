@@ -23,4 +23,10 @@ public class ModRecipes {
     public static final RegistryObject<RecipeType<OilCookingPotRecipe>> OIL_COOKING_TYPE =
             RECIPE_TYPES.register("oil_cooking",
                     () -> RecipeType.simple(new ResourceLocation(ChineseDelight.MODID, "oil_cooking")));
+
+    // 发酵罐
+    public static final RegistryObject<RecipeSerializer<FermentationRecipe>> FERMENTATION_SERIALIZER =
+            SERIALIZERS.register("fermentation", () -> FermentationRecipe.Serializer.INSTANCE);
+    public static final RegistryObject<RecipeType<FermentationRecipe>> FERMENTATION_TYPE =
+            RECIPE_TYPES.register("fermentation", () -> FermentationRecipe.Type.INSTANCE);
 }

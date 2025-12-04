@@ -2,13 +2,11 @@ package aysta3045.ChineseDelight.client;
 
 import aysta3045.ChineseDelight.ChineseDelight;
 import aysta3045.ChineseDelight.common.registry.ModMenus;
-import net.minecraft.client.Minecraft;
+import aysta3045.ChineseDelight.common.screen.OilCookingPotScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import org.slf4j.Logger;
-import com.mojang.logging.LogUtils;
 
 @Mod.EventBusSubscriber(modid = ChineseDelight.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientSetup

@@ -1,4 +1,4 @@
-package aysta3045.ChineseDelight.client;
+package aysta3045.ChineseDelight.common.screen;
 
 import aysta3045.ChineseDelight.common.menu.OilCookingPotMenu;
 import com.mojang.blaze3d.systems.RenderSystem;

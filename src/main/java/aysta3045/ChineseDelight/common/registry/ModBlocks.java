@@ -42,7 +42,7 @@ public class ModBlocks {
                     .lightLevel(state -> state.getValue(OilCookingPotBlock.LIT) ? 13 : 0)
                     .sound(SoundType.STONE)));
 
-    //牛油块
+    // 牛油块
     public static final RegistryObject<Block> BEEF_TALLOW_BLOCK = BLOCKS.register("beef_tallow_block",
             () -> new BeefTallowBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_YELLOW) // 地图颜色
@@ -52,4 +52,11 @@ public class ModBlocks {
                     .sound(SoundType.SLIME_BLOCK)
             ));
 
+    // 发酵罐
+    public static final RegistryObject<Block> FERMENTATION_JAR = BLOCKS.register("fermentation_jar",
+            () -> new FermentationJarBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .strength(2.0f)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()));
 }

@@ -23,5 +23,7 @@
   "item.chinesedelight.sesame_jar": "Sesame Jar",
   "item.chinesedelight.white_radish": "White Radish",
   "item.chinesedelight.white_radish_chunk": "White Radish Chunk",
-  "item.chinesedelight.pickled_white_radish_chunk": "Pickled White Radish Chunk"
+  "item.chinesedelight.pickled_white_radish_chunk": "Pickled White Radish Chunk",
+  "block.chinesedelight.fermentation_jar": "Fermentation Jar",
+  "container.chinesedelight.fermentation_jar": "Fermentation Jar"
 }

@@ -1,7 +1,7 @@
 package aysta3045.ChineseDelight.common.registry;
 
 import aysta3045.ChineseDelight.ChineseDelight;
-import aysta3045.ChineseDelight.common.menu.OilCookingPotMenu;
+import aysta3045.ChineseDelight.common.menu.*;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -16,4 +16,9 @@ public class ModMenus {
     public static final RegistryObject<MenuType<OilCookingPotMenu>> OIL_COOKING_POT_MENU =
             MENUS.register("oil_cooking_pot_menu",
                     () -> IForgeMenuType.create(OilCookingPotMenu::new));
+
+    // 发酵罐菜单
+    public static final RegistryObject<MenuType<FermentationJarMenu>> FERMENTATION_JAR_MENU =
+            MENUS.register("fermentation_jar_menu",
+                    () -> IForgeMenuType.create(FermentationJarMenu::new));
 }
