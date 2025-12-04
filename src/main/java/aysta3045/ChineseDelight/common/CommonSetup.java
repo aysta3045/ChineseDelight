@@ -17,10 +17,7 @@ public class CommonSetup
 
     public static void init(final FMLCommonSetupEvent event)
     {
-        LOGGER.info("HELLO FROM COMMON SETUP");
-        LOGGER.info("Chinese Delight mod common setup completed");
 
-        // 在这里可以添加将来的通用设置逻辑
     }
 
 }

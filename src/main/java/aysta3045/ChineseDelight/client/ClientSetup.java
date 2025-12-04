@@ -17,8 +17,6 @@ public class ClientSetup
 
     public static void init(final FMLClientSetupEvent event)
     {
-        LOGGER.info("HELLO FROM CLIENT SETUP");
-        LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
 
         event.enqueueWork(() -> {
 
