@@ -11,12 +11,6 @@ public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ChineseDelight.MODID);
 
-    // 熬油锅方块实体
-    public static final RegistryObject<BlockEntityType<OilCookingPotBlockEntity>> OIL_COOKING_POT =
-            BLOCK_ENTITIES.register("oil_cooking_pot",
-                    () -> BlockEntityType.Builder.of(OilCookingPotBlockEntity::new,
-                            ModBlocks.OIL_COOKING_POT.get()).build(null));
-
     // 发酵罐方块实体
     public static final RegistryObject<BlockEntityType<FermentationJarBlockEntity>> FERMENTATION_JAR =
             BLOCK_ENTITIES.register("fermentation_jar",

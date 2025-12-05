@@ -17,13 +17,6 @@ public class ModRecipes {
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES =
             DeferredRegister.create(Registries.RECIPE_TYPE, ChineseDelight.MODID);
 
-    // 熬油锅
-    public static final RegistryObject<RecipeSerializer<OilCookingPotRecipe>> OIL_COOKING_SERIALIZER =
-            SERIALIZERS.register("oil_cooking", () -> OilCookingPotRecipe.Serializer.INSTANCE);
-    public static final RegistryObject<RecipeType<OilCookingPotRecipe>> OIL_COOKING_TYPE =
-            RECIPE_TYPES.register("oil_cooking",
-                    () -> RecipeType.simple(new ResourceLocation(ChineseDelight.MODID, "oil_cooking")));
-
     // 发酵罐
     public static final RegistryObject<RecipeSerializer<FermentationRecipe>> FERMENTATION_SERIALIZER =
             SERIALIZERS.register("fermentation", () -> FermentationRecipe.Serializer.INSTANCE);

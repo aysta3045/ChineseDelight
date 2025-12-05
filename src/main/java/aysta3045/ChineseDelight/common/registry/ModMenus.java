@@ -12,11 +12,6 @@ public class ModMenus {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(ForgeRegistries.MENU_TYPES, ChineseDelight.MODID);
 
-    // 熬油锅菜单
-    public static final RegistryObject<MenuType<OilCookingPotMenu>> OIL_COOKING_POT_MENU =
-            MENUS.register("oil_cooking_pot_menu",
-                    () -> IForgeMenuType.create(OilCookingPotMenu::new));
-
     // 发酵罐菜单
     public static final RegistryObject<MenuType<FermentationJarMenu>> FERMENTATION_JAR_MENU =
             MENUS.register("fermentation_jar_menu",

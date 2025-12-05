@@ -33,15 +33,6 @@ public class ModBlocks {
                     .ignitedByLava() // 可以被岩浆点燃
             ));
 
-    // 熬油锅
-    public static final RegistryObject<Block> OIL_COOKING_POT = BLOCKS.register("oil_cooking_pot",
-            () -> new OilCookingPotBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
-                    .strength(3.0F,4.8F) // 硬度和抗爆能力
-                    .requiresCorrectToolForDrops()
-                    .lightLevel(state -> state.getValue(OilCookingPotBlock.LIT) ? 13 : 0)
-                    .sound(SoundType.STONE)));
-
     // 牛油块
     public static final RegistryObject<Block> BEEF_TALLOW_BLOCK = BLOCKS.register("beef_tallow_block",
             () -> new BeefTallowBlock(BlockBehaviour.Properties.of()

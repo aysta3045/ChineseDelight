@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class FermentationJarBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    private static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 18.0D, 15.0D);
+    private static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 15.0D, 15.0D);
 
     public FermentationJarBlock(Properties properties) {
         super(properties);
@@ -53,7 +53,7 @@ public class FermentationJarBlock extends BaseEntityBlock {
 
     @Override
     public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        return Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+        return SHAPE;  // 使用相同的形状
     }
 
     @Override
@@ -69,14 +69,17 @@ public class FermentationJarBlock extends BaseEntityBlock {
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (state.getBlock() != newState.getBlock()) {
+        // 如果旧方块和新方块不同（即方块被破坏或替换）
+        if (!state.is(newState.getBlock())) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof FermentationJarBlockEntity) {
-                ((FermentationJarBlockEntity) blockEntity).drops();
+            if (blockEntity instanceof FermentationJarBlockEntity fermentationJar) {
+                // 掉落所有物品
+                fermentationJar.drops(level, pos);
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);
     }
+
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos,

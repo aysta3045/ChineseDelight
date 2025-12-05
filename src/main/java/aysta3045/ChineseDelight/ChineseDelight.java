@@ -24,6 +24,7 @@ public class ChineseDelight
     public ChineseDelight()
     {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
         modEventBus.addListener(CommonSetup::init);
         if (FMLEnvironment.dist.isClient()) {
             modEventBus.addListener(ClientSetup::init);

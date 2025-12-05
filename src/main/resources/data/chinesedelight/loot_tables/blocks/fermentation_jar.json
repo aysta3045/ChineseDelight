@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "chinesedelight:oil_cooking_pot"
+          "name": "chinesedelight:fermentation_jar"
         }
       ],
       "rolls": 1.0

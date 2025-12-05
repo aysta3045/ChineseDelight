@@ -33,9 +33,6 @@ public class ModItems
     public static final RegistryObject<Item> BEEF_TALLOW = ITEMS.register("beef_tallow",
             () -> new BeefTallowItem(new Item.Properties()));
 
-    // 熬油锅
-    public static final RegistryObject<Item> OIL_COOKING_POT = ITEMS.register("oil_cooking_pot",
-            () -> new BlockItem(ModBlocks.OIL_COOKING_POT.get(), new Item.Properties()));
 
     // 牛油块
     public static final RegistryObject<Item> BEEF_TALLOW_BLOCK = ITEMS.register("beef_tallow_block",

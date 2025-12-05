@@ -90,11 +90,16 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
         lazyItemHandler.invalidate();
     }
 
-    public void drops() {
+    public void drops(Level level, BlockPos pos) {
+        if (level.isClientSide()) return;
+
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
         for (int i = 0; i < itemHandler.getSlots(); i++) {
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
+
+        // 使用原版的方法掉落所有物品
+        net.minecraft.world.Containers.dropContents(level, pos, inventory);
     }
 
     @Override
