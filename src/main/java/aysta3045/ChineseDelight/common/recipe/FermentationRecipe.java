@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 public class FermentationRecipe implements Recipe<Container> {
     private final ResourceLocation id;
     private final ItemStack output;
-    private final NonNullList<Ingredient> recipeItems;
+    public final NonNullList<Ingredient> recipeItems;
     private final Ingredient container;
     private final int fermentationTime;
 
@@ -36,9 +36,40 @@ public class FermentationRecipe implements Recipe<Container> {
         // 检查容器
         if (!this.container.test(container.getItem(9))) return false;
 
-        // 检查9个输入槽
-        for (int i = 0; i < 9; i++) {
-            if (!recipeItems.get(i).test(container.getItem(i))) return false;
+        boolean[] slotUsed = new boolean[9];
+
+
+        for (int recipeIndex = 0; recipeIndex < 9; recipeIndex++) {
+            Ingredient ingredient = recipeItems.get(recipeIndex);
+
+            if (ingredient.isEmpty()) {
+                continue;
+            }
+
+            boolean foundMatch = false;
+
+
+            for (int slotIndex = 0; slotIndex < 9; slotIndex++) {
+                if (slotUsed[slotIndex]) continue;
+
+                if (ingredient.test(container.getItem(slotIndex))) {
+                    slotUsed[slotIndex] = true;
+                    foundMatch = true;
+                    break;
+                }
+            }
+
+            if (!foundMatch) {
+                return false;
+            }
+        }
+
+        for (int slotIndex = 0; slotIndex < 9; slotIndex++) {
+            if (!slotUsed[slotIndex] && !container.getItem(slotIndex).isEmpty()) {
+                if (!recipeItems.get(slotIndex).isEmpty()) {
+                    return false;
+                }
+            }
         }
 
         return true;

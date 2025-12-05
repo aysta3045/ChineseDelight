@@ -40,9 +40,9 @@ public class FermentationJarMenu extends AbstractContainerMenu {
                 }
             }
             // 容器槽 (9)
-            this.addSlot(new SlotItemHandler(handler, 9, 92, 35));
+            this.addSlot(new SlotItemHandler(handler, 9, 88, 53));
             // 输出槽 (10)
-            this.addSlot(new SlotItemHandler(handler, 10, 124, 35) {
+            this.addSlot(new SlotItemHandler(handler, 10, 126, 35) {
                 @Override
                 public boolean mayPlace(ItemStack stack) {
                     return false; // 输出槽不能手动放置物品
@@ -66,7 +66,7 @@ public class FermentationJarMenu extends AbstractContainerMenu {
     }
 
     // 熔炉火焰动画的坐标偏移
-    private static final int[] BURN_TIME_SPRITES = {0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12};
+    private static final int[] BURN_TIME_SPRITES = {0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17};
 
     public int getBurnProgressSprite() {
         int progress = this.data.get(0);

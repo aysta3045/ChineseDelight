@@ -12,8 +12,6 @@ import net.minecraft.world.entity.player.Inventory;
 public class FermentationJarScreen extends AbstractContainerScreen<FermentationJarMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation("chinesedelight", "textures/gui/fermentation_jar.png");
-    private static final ResourceLocation FLAME_TEXTURE =
-            new ResourceLocation("textures/gui/container/furnace.png");
 
     public FermentationJarScreen(FermentationJarMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -34,21 +32,21 @@ public class FermentationJarScreen extends AbstractContainerScreen<FermentationJ
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
-        // 渲染火焰动画
+        // 渲染进度动画
         if (menu.isCrafting()) {
             int flameSprite = menu.getBurnProgressSprite();
-            // 从原版熔炉GUI中复制火焰动画
-            guiGraphics.blit(FLAME_TEXTURE,
-                    x + 56, y + 36 + 12 - flameSprite,
-                    176, 12 - flameSprite,
-                    14, flameSprite + 1);
+            // 自己的动画
+            guiGraphics.blit(TEXTURE,
+                    x + 95, y + 21 + 17 - flameSprite,
+                    177, 36 - flameSprite,
+                    10, flameSprite + 1);
         }
 
         // 渲染进度箭头
         int progress = menu.getScaledProgress();
         guiGraphics.blit(TEXTURE,
-                x + 79, y + 34,
-                176, 14,
+                x + 91, y + 34,
+                176, 1,
                 progress + 1, 16);
     }
 

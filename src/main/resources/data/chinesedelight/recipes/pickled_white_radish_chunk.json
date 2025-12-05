@@ -1,0 +1,9 @@
+{
+  "type": "chinesedelight:fermentation",
+  "ingredients": [
+    {"item": "chinesedelight:white_radish_chunk"}
+  ],
+  "container": {"item": "minecraft:bowl"},
+  "output": {"item": "chinesedelight:pickled_white_radish_chunk"},
+  "fermentation_time": 200
+}

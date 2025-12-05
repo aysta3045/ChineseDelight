@@ -1,9 +1,0 @@
-{
-  "type": "chinesedelight:fermentation",
-  "ingredients": [
-    {"item": "minecraft:glass"}
-  ],
-  "container": {"item": "minecraft:glass_bottle"},
-  "output": {"item": "minecraft:glass_bottle"},
-  "fermentation_time": 400
-}
