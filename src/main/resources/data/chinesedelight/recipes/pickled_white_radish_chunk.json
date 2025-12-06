@@ -1,9 +1,18 @@
 {
   "type": "chinesedelight:fermentation",
   "ingredients": [
-    {"item": "chinesedelight:white_radish_chunk"}
+    {
+      "ingredient": {"item": "chinesedelight:white_radish_chunk"},
+      "count": 1
+    },
+    {
+      "ingredient": {"item": "chinesedelight:beef_tallow"},
+      "count": 1
+    }
   ],
-  "container": {"item": "minecraft:bowl"},
+  "container": {"item": "minecraft:glass_bottle"},
   "output": {"item": "chinesedelight:pickled_white_radish_chunk"},
-  "fermentation_time": 200
+  "fermentation_time": 200,
+  "output_multiplier_index": 0,
+  "max_multiplier": 64
 }

@@ -46,6 +46,10 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
     private int maxProgress = 200; // 默认发酵时间
     private int currentRecipeTime = 200; // 当前配方的发酵时间
 
+    // 缓存当前匹配信息
+    private FermentationRecipe currentRecipe = null;
+    private FermentationRecipe.MatchResult currentMatchResult = null;
+
     public FermentationJarBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.FERMENTATION_JAR.get(), pos, state);
         this.data = new ContainerData() {
@@ -126,51 +130,62 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
     public static void tick(Level level, BlockPos pos, BlockState state, FermentationJarBlockEntity blockEntity) {
         if (level.isClientSide()) return;
 
+        // 检查是否有匹配的配方
+        Optional<FermentationRecipe> recipe = findRecipe(blockEntity);
+        if (recipe.isPresent()) {
+            FermentationRecipe currentRecipe = recipe.get();
+            SimpleContainer inventory = getContainer(blockEntity);
 
-        // 检查是否有有效配方并更新最大进度
-        Optional<FermentationRecipe> currentRecipe = getCurrentRecipe(blockEntity);
-        if (currentRecipe.isPresent()) {
-            // 获取配方中的发酵时间
-            int recipeTime = currentRecipe.get().getFermentationTime();
+            // 获取匹配结果
+            Optional<FermentationRecipe.MatchResult> matchResult = currentRecipe.getMatchResult(inventory);
 
-            // 如果配方时间与当前记录的不同，更新它
-            if (blockEntity.currentRecipeTime != recipeTime) {
-                blockEntity.currentRecipeTime = recipeTime;
-                blockEntity.maxProgress = recipeTime;
-                blockEntity.setChanged();
-            }
+            if (matchResult.isPresent()) {
+                blockEntity.currentRecipe = currentRecipe;
+                blockEntity.currentMatchResult = matchResult.get();
+                blockEntity.maxProgress = currentRecipe.getFermentationTime();
 
-            // 如果有配方且输出槽可以接收产物，则进行发酵
-            if (canCraft(blockEntity, currentRecipe.get())) {
                 blockEntity.progress++;
                 setChanged(level, pos, state);
 
                 if (blockEntity.progress >= blockEntity.maxProgress) {
                     craftItem(blockEntity);
-                    blockEntity.resetProgress();
+                    blockEntity.progress = 0;
+                    blockEntity.currentRecipe = null;
+                    blockEntity.currentMatchResult = null;
                 }
             } else {
-                // 配方有效但输出槽已满，停止进度但不重置
-                // 这样当输出槽有空位时会继续发酵
+                blockEntity.resetProgress();
+                blockEntity.currentRecipe = null;
+                blockEntity.currentMatchResult = null;
+                setChanged(level, pos, state);
             }
         } else {
-            // 没有有效配方，重置进度
             blockEntity.resetProgress();
+            blockEntity.currentRecipe = null;
+            blockEntity.currentMatchResult = null;
             setChanged(level, pos, state);
         }
     }
 
-    private static Optional<FermentationRecipe> getCurrentRecipe(FermentationJarBlockEntity blockEntity) {
+    private static Optional<FermentationRecipe> findRecipe(FermentationJarBlockEntity blockEntity) {
         Level level = blockEntity.level;
         if (level == null) return Optional.empty();
 
+        SimpleContainer inventory = getContainer(blockEntity);
+
+        return level.getRecipeManager()
+                .getAllRecipesFor(ModRecipes.FERMENTATION_TYPE.get())
+                .stream()
+                .filter(recipe -> recipe.matches(inventory, level))
+                .findFirst();
+    }
+
+    private static SimpleContainer getContainer(FermentationJarBlockEntity blockEntity) {
         SimpleContainer inventory = new SimpleContainer(blockEntity.itemHandler.getSlots());
         for (int i = 0; i < blockEntity.itemHandler.getSlots(); i++) {
             inventory.setItem(i, blockEntity.itemHandler.getStackInSlot(i));
         }
-
-        return level.getRecipeManager()
-                .getRecipeFor(ModRecipes.FERMENTATION_TYPE.get(), inventory, level);
+        return inventory;
     }
 
     private static boolean canCraft(FermentationJarBlockEntity blockEntity, FermentationRecipe recipe) {
@@ -197,71 +212,50 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
         return false; // 输出槽有不同物品，无法接收
     }
 
+    private static void craftItem(FermentationJarBlockEntity blockEntity) {
+        Level level = blockEntity.level;
+        if (level == null || blockEntity.currentRecipe == null || blockEntity.currentMatchResult == null) return;
+
+        var registryAccess = level.registryAccess();
+        FermentationRecipe.MatchResult matchResult = blockEntity.currentMatchResult;
+
+        // 获取输出数量和物品
+        int outputCount = matchResult.outputCount;
+        ItemStack result = blockEntity.currentRecipe.getResultItemWithCount(registryAccess, outputCount);
+
+        // 根据匹配结果消耗物品
+        int[] slotConsumeCount = matchResult.slotConsumeCount;
+        for (int slot = 0; slot < 9; slot++) {
+            if (slotConsumeCount[slot] > 0) {
+                blockEntity.itemHandler.extractItem(slot, slotConsumeCount[slot], false);
+            }
+        }
+
+        // 消耗容器（固定1个）
+        blockEntity.itemHandler.extractItem(9, 1, false);
+
+        // 设置输出
+        ItemStack currentOutput = blockEntity.itemHandler.getStackInSlot(10);
+        if (currentOutput.isEmpty()) {
+            blockEntity.itemHandler.setStackInSlot(10, result);
+        } else if (currentOutput.getItem() == result.getItem() &&
+                ItemStack.isSameItemSameTags(currentOutput, result)) {
+            // 相同物品，合并数量
+            int newCount = currentOutput.getCount() + result.getCount();
+            int maxStackSize = currentOutput.getMaxStackSize();
+            if (newCount <= maxStackSize) {
+                currentOutput.setCount(newCount);
+                blockEntity.itemHandler.setStackInSlot(10, currentOutput);
+            }
+        }
+
+        blockEntity.resetProgress();
+    }
+
     private void resetProgress() {
         this.progress = 0;
         // 重置进度时不重置maxProgress，保持当前配方的时间
         setChanged();
-    }
-
-    private static void craftItem(FermentationJarBlockEntity blockEntity) {
-        Level level = blockEntity.level;
-        if (level == null) return;
-
-        SimpleContainer inventory = new SimpleContainer(blockEntity.itemHandler.getSlots());
-        for (int i = 0; i < blockEntity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, blockEntity.itemHandler.getStackInSlot(i));
-        }
-
-        Optional<FermentationRecipe> recipe = level.getRecipeManager()
-                .getRecipeFor(ModRecipes.FERMENTATION_TYPE.get(), inventory, level);
-
-        if (recipe.isPresent() && canCraft(blockEntity, recipe.get())) {
-            // 获取RegistryAccess
-            var registryAccess = level.registryAccess();
-            ItemStack result = recipe.get().getResultItem(registryAccess);
-
-            // 获取配方原料
-            NonNullList<Ingredient> ingredients = recipe.get().recipeItems;
-
-            // 找出哪些槽位被用于匹配配方原料并消耗它们
-            boolean[] slotUsed = new boolean[9];
-
-            // 为每个非空配方原料找到匹配的槽位
-            for (int recipeIndex = 0; recipeIndex < 9; recipeIndex++) {
-                Ingredient ingredient = ingredients.get(recipeIndex);
-
-                if (ingredient.isEmpty()) {
-                    continue;
-                }
-
-                // 查找匹配的槽位
-                for (int slotIndex = 0; slotIndex < 9; slotIndex++) {
-                    if (slotUsed[slotIndex]) continue;
-
-                    if (ingredient.test(blockEntity.itemHandler.getStackInSlot(slotIndex))) {
-                        slotUsed[slotIndex] = true;
-                        // 消耗该槽位的物品
-                        blockEntity.itemHandler.extractItem(slotIndex, 1, false);
-                        break;
-                    }
-                }
-            }
-
-            // 消耗容器
-            blockEntity.itemHandler.extractItem(9, 1, false);
-
-            // 设置输出
-            ItemStack currentOutput = blockEntity.itemHandler.getStackInSlot(10);
-            if (currentOutput.isEmpty()) {
-                blockEntity.itemHandler.setStackInSlot(10, result.copy());
-            } else if (currentOutput.getItem() == result.getItem() &&
-                    ItemStack.isSameItemSameTags(currentOutput, result)) {
-                currentOutput.grow(result.getCount());
-                blockEntity.itemHandler.setStackInSlot(10, currentOutput);
-            }
-
-            blockEntity.resetProgress();
-        }
     }
 
     @Override
