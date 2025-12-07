@@ -46,8 +46,10 @@ public class ModBlocks {
     // 发酵罐
     public static final RegistryObject<Block> FERMENTATION_JAR = BLOCKS.register("fermentation_jar",
             () -> new FermentationJarBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
+                    .mapColor(MapColor.COLOR_BROWN)
                     .strength(2.0f)
                     .requiresCorrectToolForDrops()
-                    .noOcclusion()));
+                    .noOcclusion()
+                    .sound(SoundType.DECORATED_POT)
+            ));
 }

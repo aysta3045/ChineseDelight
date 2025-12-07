@@ -22,24 +22,28 @@ public class FermentationRecipe implements Recipe<Container> {
     private final Ingredient container;
     private final int fermentationTime;
     private final int outputMultiplierIndex; // -1表示没有输出乘数，否则表示哪个原料的数量决定输出数量
+    private final int maxMultiplier; // 最大乘数限制
 
     public FermentationRecipe(ResourceLocation id, ItemStack outputTemplate,
                               NonNullList<IngredientEntry> ingredientEntries,
-                              Ingredient container, int fermentationTime, int outputMultiplierIndex) {
+                              Ingredient container, int fermentationTime, int outputMultiplierIndex, int maxMultiplier) {
         this.id = id;
         this.outputTemplate = outputTemplate;
         this.ingredientEntries = ingredientEntries;
         this.container = container;
         this.fermentationTime = fermentationTime;
         this.outputMultiplierIndex = outputMultiplierIndex;
+        this.maxMultiplier = maxMultiplier > 0 ? maxMultiplier : 64;
     }
 
     @Override
     public boolean matches(Container container, Level level) {
         if (level.isClientSide()) return false;
 
-        // 检查容器槽
-        if (!this.container.test(container.getItem(9))) return false;
+        // 检查容器槽至少有一个容器
+        if (!this.container.test(container.getItem(9)) || container.getItem(9).getCount() < 1) {
+            return false;
+        }
 
         // 为每个槽位创建一个匹配状态数组
         boolean[] slotMatched = new boolean[9];
@@ -54,25 +58,26 @@ public class FermentationRecipe implements Recipe<Container> {
             for (int slot = 0; slot < 9; slot++) {
                 if (!slotMatched[slot] && entry.getIngredient().test(container.getItem(slot))) {
                     ItemStack stack = container.getItem(slot);
-                    if (stack.getCount() >= 1) {
-                        if (i == outputMultiplierIndex) {
-                            // 对于输出乘数原料，可以处理多个，但至少需要requiredCount个
-                            int available = Math.min(stack.getCount(), 64); // 限制最大数量
-                            int needed = requiredCount - foundCount;
-                            int toUse = Math.min(available, needed);
-                            foundCount += toUse;
-                            if (toUse > 0) {
-                                slotMatched[slot] = true;
+
+                    if (i == outputMultiplierIndex) {
+                        // 对于输出乘数原料，可以处理多个
+                        int available = stack.getCount();
+                        int needed = requiredCount - foundCount;
+
+                        if (available >= needed) {
+                            foundCount += needed;
+                            if (foundCount >= requiredCount) {
+                                break;
                             }
-                        } else {
-                            // 对于普通原料，每槽只能使用1个
+                        }
+                    } else {
+                        // 对于普通原料，每槽只能使用1个
+                        if (stack.getCount() >= 1) {
                             foundCount += 1;
                             slotMatched[slot] = true;
-                        }
-
-                        // 如果找到了足够的数量，跳出循环
-                        if (foundCount >= requiredCount) {
-                            break;
+                            if (foundCount >= requiredCount) {
+                                break;
+                            }
                         }
                     }
                 }
@@ -93,8 +98,15 @@ public class FermentationRecipe implements Recipe<Container> {
         int[] slotConsumeCount = new int[9];
         int multiplierItemTotal = 0; // 乘数物品的总数量
 
-        // 对于每个配方原料
+        // 获取容器数量和最大堆叠限制
+        ItemStack containerStack = container.getItem(9);
+        int containerCount = containerStack.getCount();
+        int maxStackSize = outputTemplate.getMaxStackSize();
+
+        // 先处理非乘数原料
         for (int i = 0; i < ingredientEntries.size(); i++) {
+            if (i == outputMultiplierIndex) continue; // 乘数原料最后处理
+
             IngredientEntry entry = ingredientEntries.get(i);
             int requiredCount = entry.getCount();
             int foundCount = 0;
@@ -103,30 +115,14 @@ public class FermentationRecipe implements Recipe<Container> {
             for (int slot = 0; slot < 9; slot++) {
                 if (!slotMatched[slot] && entry.getIngredient().test(container.getItem(slot))) {
                     ItemStack stack = container.getItem(slot);
-                    int availableCount = stack.getCount();
-
-                    if (i == outputMultiplierIndex) {
-                        // 对于输出乘数原料，可以消耗多个
-                        // 计算这个槽位需要消耗的数量
-                        int needed = requiredCount - foundCount;
-                        int consume = Math.min(availableCount, needed);
-
-                        if (consume > 0) {
-                            slotConsumeCount[slot] = consume;
-                            foundCount += consume;
-                            multiplierItemTotal += consume; // 累加到总数量中
-                            slotMatched[slot] = true;
-                        }
-                    } else {
-                        // 对于普通原料，每槽只能消耗1个
+                    if (stack.getCount() >= 1) {
                         slotConsumeCount[slot] = 1;
                         foundCount += 1;
                         slotMatched[slot] = true;
-                    }
 
-                    // 如果找到了足够的数量，跳出循环
-                    if (foundCount >= requiredCount) {
-                        break;
+                        if (foundCount >= requiredCount) {
+                            break;
+                        }
                     }
                 }
             }
@@ -137,26 +133,96 @@ public class FermentationRecipe implements Recipe<Container> {
             }
         }
 
+        // 处理乘数原料（如果存在）
+        if (outputMultiplierIndex != -1) {
+            IngredientEntry multiplierEntry = ingredientEntries.get(outputMultiplierIndex);
+            int requiredCount = multiplierEntry.getCount();
+
+            // 遍历所有未匹配的槽位，计算乘数原料的总数
+            for (int slot = 0; slot < 9; slot++) {
+                if (!slotMatched[slot] && multiplierEntry.getIngredient().test(container.getItem(slot))) {
+                    ItemStack stack = container.getItem(slot);
+                    multiplierItemTotal += stack.getCount();
+                }
+            }
+
+            // 确保有足够的乘数原料
+            if (multiplierItemTotal < requiredCount) {
+                return Optional.empty();
+            }
+        }
+
         // 计算输出数量
         int outputCount;
         if (outputMultiplierIndex != -1 && multiplierItemTotal > 0) {
-            // 如果有输出乘数原料，输出数量等于乘数物品的总数量
+            // 基础输出数量等于乘数物品的总数量
             outputCount = multiplierItemTotal;
+
+            // 限制输出数量不超过最大乘数、最大堆叠数和容器数量
+            int maxAllowed = Math.min(maxMultiplier, maxStackSize);
+            maxAllowed = Math.min(maxAllowed, containerCount); // 不能超过容器数量
+
+            if (outputCount > maxAllowed) {
+                outputCount = maxAllowed;
+            }
         } else {
-            // 否则输出数量为1
-            outputCount = 1;
+            // 对于非乘数配方，输出数量为1，但不能超过容器数量
+            outputCount = Math.min(1, containerCount);
         }
 
-        return Optional.of(new MatchResult(slotConsumeCount, outputCount));
+        // 如果输出数量为0，返回空
+        if (outputCount <= 0) {
+            return Optional.empty();
+        }
+
+        // 重新计算乘数原料的消耗数量（基于最终输出数量）
+        if (outputMultiplierIndex != -1) {
+            // 重置乘数原料的消耗
+            for (int slot = 0; slot < 9; slot++) {
+                if (slotConsumeCount[slot] > 0 && ingredientEntries.get(outputMultiplierIndex).getIngredient().test(container.getItem(slot))) {
+                    slotConsumeCount[slot] = 0;
+                }
+            }
+
+            // 计算需要消耗的乘数原料数量（等于输出数量）
+            int multiplierToConsume = outputCount;
+            IngredientEntry multiplierEntry = ingredientEntries.get(outputMultiplierIndex);
+
+            // 分配消耗到各个槽位
+            for (int slot = 0; slot < 9; slot++) {
+                if (multiplierToConsume <= 0) break;
+
+                if (!slotMatched[slot] && multiplierEntry.getIngredient().test(container.getItem(slot))) {
+                    ItemStack stack = container.getItem(slot);
+                    int available = stack.getCount();
+                    int consume = Math.min(available, multiplierToConsume);
+
+                    if (consume > 0) {
+                        slotConsumeCount[slot] = consume;
+                        slotMatched[slot] = true;
+                        multiplierToConsume -= consume;
+                    }
+                }
+            }
+
+            // 如果乘数原料不足，返回空
+            if (multiplierToConsume > 0) {
+                return Optional.empty();
+            }
+        }
+
+        return Optional.of(new MatchResult(slotConsumeCount, outputCount, containerCount));
     }
 
     public static class MatchResult {
         public final int[] slotConsumeCount; // 每个槽位消耗的数量
         public final int outputCount; // 输出的物品数量
+        public final int containerCount; // 容器数量
 
-        public MatchResult(int[] slotConsumeCount, int outputCount) {
+        public MatchResult(int[] slotConsumeCount, int outputCount, int containerCount) {
             this.slotConsumeCount = slotConsumeCount;
             this.outputCount = outputCount;
+            this.containerCount = containerCount;
         }
     }
 
@@ -238,6 +304,11 @@ public class FermentationRecipe implements Recipe<Container> {
         return outputTemplate.getMaxStackSize();
     }
 
+    // 获取最大乘数限制
+    public int getMaxMultiplier() {
+        return maxMultiplier;
+    }
+
     public static class Type implements RecipeType<FermentationRecipe> {
         private Type() {}
         public static final Type INSTANCE = new Type();
@@ -273,7 +344,10 @@ public class FermentationRecipe implements Recipe<Container> {
             // 解析输出乘数索引，-1表示没有乘数
             int outputMultiplierIndex = GsonHelper.getAsInt(json, "output_multiplier_index", -1);
 
-            return new FermentationRecipe(id, output, inputs, container, fermentationTime, outputMultiplierIndex);
+            // 解析最大乘数限制
+            int maxMultiplier = GsonHelper.getAsInt(json, "max_multiplier", 64);
+
+            return new FermentationRecipe(id, output, inputs, container, fermentationTime, outputMultiplierIndex, maxMultiplier);
         }
 
         @Override
@@ -291,8 +365,9 @@ public class FermentationRecipe implements Recipe<Container> {
             ItemStack output = buf.readItem();
             int fermentationTime = buf.readInt();
             int outputMultiplierIndex = buf.readInt();
+            int maxMultiplier = buf.readInt(); // 读取最大乘数
 
-            return new FermentationRecipe(id, output, inputs, container, fermentationTime, outputMultiplierIndex);
+            return new FermentationRecipe(id, output, inputs, container, fermentationTime, outputMultiplierIndex, maxMultiplier);
         }
 
         @Override
@@ -306,6 +381,7 @@ public class FermentationRecipe implements Recipe<Container> {
             buf.writeItem(recipe.outputTemplate);
             buf.writeInt(recipe.fermentationTime);
             buf.writeInt(recipe.outputMultiplierIndex);
+            buf.writeInt(recipe.maxMultiplier); // 写入最大乘数
         }
     }
 }

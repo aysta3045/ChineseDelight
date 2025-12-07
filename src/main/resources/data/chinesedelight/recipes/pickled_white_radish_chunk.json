@@ -10,7 +10,7 @@
       "count": 1
     }
   ],
-  "container": {"item": "minecraft:glass_bottle"},
+  "container": {"item": "minecraft:bowl"},
   "output": {"item": "chinesedelight:pickled_white_radish_chunk"},
   "fermentation_time": 200,
   "output_multiplier_index": 0,

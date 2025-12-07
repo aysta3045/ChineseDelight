@@ -219,8 +219,24 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
         var registryAccess = level.registryAccess();
         FermentationRecipe.MatchResult matchResult = blockEntity.currentMatchResult;
 
-        // 获取输出数量和物品
+        // 获取输出数量和容器数量
         int outputCount = matchResult.outputCount;
+        int containerCount = matchResult.containerCount;
+
+        // 输出数量不能超过容器数量
+        outputCount = Math.min(outputCount, containerCount);
+
+        // 限制输出数量不超过配方的最大乘数
+        int maxMultiplier = blockEntity.currentRecipe.getMaxMultiplier();
+        if (outputCount > maxMultiplier) {
+            outputCount = maxMultiplier;
+        }
+
+        // 如果输出数量为0，不执行合成
+        if (outputCount <= 0) {
+            return;
+        }
+
         ItemStack result = blockEntity.currentRecipe.getResultItemWithCount(registryAccess, outputCount);
 
         // 根据匹配结果消耗物品
@@ -231,8 +247,8 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
             }
         }
 
-        // 消耗容器（固定1个）
-        blockEntity.itemHandler.extractItem(9, 1, false);
+        // 消耗容器（消耗数量等于输出数量）
+        blockEntity.itemHandler.extractItem(9, outputCount, false);
 
         // 设置输出
         ItemStack currentOutput = blockEntity.itemHandler.getStackInSlot(10);
@@ -246,7 +262,15 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
             if (newCount <= maxStackSize) {
                 currentOutput.setCount(newCount);
                 blockEntity.itemHandler.setStackInSlot(10, currentOutput);
+            } else {
+                // 如果超过最大堆叠，只添加部分
+                int canAdd = maxStackSize - currentOutput.getCount();
+                if (canAdd > 0) {
+                    currentOutput.setCount(currentOutput.getCount() + canAdd);
+                    blockEntity.itemHandler.setStackInSlot(10, currentOutput);
+                }
             }
+        } else {
         }
 
         blockEntity.resetProgress();
