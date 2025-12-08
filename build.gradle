@@ -76,7 +76,6 @@ repositories {
     maven {
         url "https://maven.ryanliptak.com/"
     }
-    // 添加 Mixin 仓库
     maven {
         name = 'SpongePowered'
         url = 'https://repo.spongepowered.org/repository/maven-public/'
@@ -144,13 +143,10 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
-// Mixin 配置
+// minix
 mixin {
-    // Mixin 配置
     add sourceSets.main, "chinesedelight.refmap.json"
     config "chinesedelight.mixins.json"
-
-    // 启用导出和调试
     debug.verbose = true
     debug.export = true
 }

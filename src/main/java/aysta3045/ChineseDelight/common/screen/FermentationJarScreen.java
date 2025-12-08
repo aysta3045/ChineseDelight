@@ -35,7 +35,6 @@ public class FermentationJarScreen extends AbstractContainerScreen<FermentationJ
         // 渲染进度动画
         if (menu.isCrafting()) {
             int flameSprite = menu.getBurnProgressSprite();
-            // 自己的动画
             guiGraphics.blit(TEXTURE,
                     x + 95, y + 21 + 17 - flameSprite,
                     177, 36 - flameSprite,

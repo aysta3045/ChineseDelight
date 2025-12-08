@@ -61,7 +61,6 @@ public class FermentationJarBlock extends BaseEntityBlock {
         return true;
     }
 
-    /* Block Entity 相关方法 */
     @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
@@ -69,11 +68,10 @@ public class FermentationJarBlock extends BaseEntityBlock {
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        // 如果旧方块和新方块不同（即方块被破坏或替换）
+        // 方块被破坏时掉落物品
         if (!state.is(newState.getBlock())) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof FermentationJarBlockEntity fermentationJar) {
-                // 掉落所有物品
                 fermentationJar.drops(level, pos);
             }
         }

@@ -16,8 +16,10 @@ public class EntityRendererRegistry {
     @OnlyIn(Dist.CLIENT)
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+
             // 注册中华美食鸭的渲染器
             EntityRenderers.register(ModEntityTypes.CHINESE_DELIGHT_DUCK.get(), ChineseDelightDuckRenderer::new);
+
         });
     }
 }

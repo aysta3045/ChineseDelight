@@ -24,7 +24,7 @@ public class ChineseDelightDuck extends Chicken {
     private static final EntityDataAccessor<Boolean> DATA_IS_CHINESE_DELIGHT_DUCK =
             SynchedEntityData.defineId(ChineseDelightDuck.class, EntityDataSerializers.BOOLEAN);
 
-    // 添加自定义的蛋计时器
+    // 蛋计时器
     private int duckEggTime = this.random.nextInt(6000) + 6000;
 
     public ChineseDelightDuck(EntityType<? extends Chicken> entityType, Level level) {
@@ -101,7 +101,6 @@ public class ChineseDelightDuck extends Chicken {
                 stack.getItem() == Items.BEETROOT_SEEDS;
     }
 
-    // 修复交配生成小鸡的bug - 重写getBreedOffspring方法
     @Override
     public Chicken getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
         // 确保返回的是鸭子实体而不是鸡
@@ -110,11 +109,10 @@ public class ChineseDelightDuck extends Chicken {
 
     @Override
     public void aiStep() {
-        // 先调用父类的aiStep，但阻止其下鸡蛋的逻辑
         super.aiStep();
 
         // 立即重置父类的eggTime，防止父类Chicken下鸡蛋
-        if (this.eggTime < 10) { // 如果eggTime接近触发下蛋
+        if (this.eggTime < 10) {
             this.eggTime = this.random.nextInt(6000) + 6000;
         }
 
@@ -122,7 +120,6 @@ public class ChineseDelightDuck extends Chicken {
         if (!this.level().isClientSide && this.isAlive() && !this.isBaby() && --this.duckEggTime <= 0) {
             this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
 
-            // 下鸭蛋
             this.spawnAtLocation(ModItems.DUCK_EGG.get());
 
             this.duckEggTime = this.random.nextInt(6000) + 6000; // 5-10分钟下一次蛋

@@ -23,7 +23,7 @@ public class HotDryNoodlesItem extends Item
         );
     }
 
-    // 添加物品详细信息
+    // 物品详细信息
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);

@@ -2,7 +2,6 @@ package aysta3045.ChineseDelight.common.registry;
 
 import net.minecraft.world.food.FoodProperties;
 
-// 食物属性定义
 public class ModFoods {
     // 热干面
     public static final FoodProperties HOT_DRY_NOODLE = new FoodProperties.Builder()

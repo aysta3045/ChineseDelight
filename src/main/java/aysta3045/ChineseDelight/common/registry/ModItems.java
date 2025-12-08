@@ -11,32 +11,36 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModItems
 {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, aysta3045.ChineseDelight.ChineseDelight.MODID);
-    // 注册物品
 
-    // 热干面
-    public static final RegistryObject<Item> HOT_DRY_NOODLES = ITEMS.register("hot_dry_noodles",
-            HotDryNoodlesItem::new);
 
-    // 芝麻
-    public static final RegistryObject<Item> SESAME = ITEMS.register("sesame",
-            () -> new SesameItem(ModBlocks.SESAME_CROP.get(), new Item.Properties()));
 
-    // 芝麻穗
-    public static final RegistryObject<Item> SESAME_SPIKE = ITEMS.register("sesame_spike",
-            () -> new SesameSpikeItem(new Item.Properties()));
+    // 方块
+    // 牛油块
+    public static final RegistryObject<Item> BEEF_TALLOW_BLOCK = ITEMS.register("beef_tallow_block",
+            () -> new BlockItem(ModBlocks.BEEF_TALLOW_BLOCK.get(), new Item.Properties()));
 
     // 一捆芝麻穗
     public static final RegistryObject<Item> SESAME_BALE = ITEMS.register("sesame_bale",
             () -> new BlockItem(ModBlocks.SESAME_BALE.get(), new Item.Properties()));
 
+    // 发酵罐
+    public static final RegistryObject<Item> FERMENTATION_JAR = ITEMS.register("fermentation_jar",
+            () -> new BlockItem(ModBlocks.FERMENTATION_JAR.get(), new Item.Properties()));
+
+
+
+    // 物品
+    // 热干面
+    public static final RegistryObject<Item> HOT_DRY_NOODLES = ITEMS.register("hot_dry_noodles",
+            HotDryNoodlesItem::new);
+
+    // 芝麻穗
+    public static final RegistryObject<Item> SESAME_SPIKE = ITEMS.register("sesame_spike",
+            () -> new SesameSpikeItem(new Item.Properties()));
+
     // 牛油
     public static final RegistryObject<Item> BEEF_TALLOW = ITEMS.register("beef_tallow",
             () -> new BeefTallowItem(new Item.Properties()));
-
-
-    // 牛油块
-    public static final RegistryObject<Item> BEEF_TALLOW_BLOCK = ITEMS.register("beef_tallow_block",
-            () -> new BlockItem(ModBlocks.BEEF_TALLOW_BLOCK.get(), new Item.Properties()));
 
     // 生鸭肉
     public static final RegistryObject<Item> DUCK_MEAT = ITEMS.register("duck_meat",
@@ -53,7 +57,7 @@ public class ModItems
     // 鸭刷怪蛋
     public static final RegistryObject<Item> CHINESE_DELIGHT_DUCK_SPAWN_EGG = ITEMS.register("chinese_delight_duck_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.CHINESE_DELIGHT_DUCK,
-                    0xA0522D, 0xFFD700, // 棕色身体，金色喙
+                    0xA0522D, 0xFFD700,
                     new Item.Properties()));
 
     // 鸭蛋
@@ -80,7 +84,12 @@ public class ModItems
     public static final RegistryObject<Item> PICKLED_WHITE_RADISH_CHUNK = ITEMS.register("pickled_white_radish_chunk",
             PickledWhiteRadishChunkItem::new);
 
-    // 发酵罐
-    public static final RegistryObject<Item> FERMENTATION_JAR = ITEMS.register("fermentation_jar",
-            () -> new BlockItem(ModBlocks.FERMENTATION_JAR.get(), new Item.Properties()));
+
+
+
+    // 作物
+    // 芝麻作物
+    public static final RegistryObject<Item> SESAME = ITEMS.register("sesame",
+            () -> new SesameItem(ModBlocks.SESAME_CROP.get(), new Item.Properties()));
+
 }

@@ -11,7 +11,7 @@ public class Config
 
     static {
         BUILDER.push("General Settings");
-        // 在这里添加实际需要的配置项
+        // 配置项
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

@@ -3,7 +3,6 @@ package aysta3045.ChineseDelight.common.registry;
 import aysta3045.ChineseDelight.ChineseDelight;
 import aysta3045.ChineseDelight.common.recipe.*;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.registries.DeferredRegister;

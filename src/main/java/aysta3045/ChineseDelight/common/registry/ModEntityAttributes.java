@@ -13,10 +13,9 @@ public class ModEntityAttributes {
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
-        // 直接使用鸡的属性创建器，确保包含所有必需属性
         AttributeSupplier.Builder builder = Chicken.createAttributes();
 
-        // 只修改我们需要自定义的属性
+        // 自定义属性
         builder.add(Attributes.MAX_HEALTH, 6.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D);
 

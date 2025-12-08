@@ -19,7 +19,6 @@ public class ModCreativeTabs
                     .title(Component.translatable("itemGroup." + ChineseDelight.MODID + ".chinesedelight_tab"))
                     .icon(() -> new ItemStack(Items.COOKED_CHICKEN))
                     .displayItems((parameters, output) -> {
-                        // 自动添加ModItems中注册的所有物品
                         ModItems.ITEMS.getEntries().forEach(item -> {
                             output.accept(item.get());
                         });

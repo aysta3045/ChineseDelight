@@ -19,11 +19,10 @@ import net.minecraft.world.level.LevelReader;
 import aysta3045.ChineseDelight.common.registry.ModItems;
 
 public class SesameCropBlock extends CropBlock {
-    // 与小麦一致，使用 AGE_7 表示 8 个生长阶段（0-7）
+    // 定义生长阶段
     public static final int MAX_AGE = 7;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_7;
 
-    // 使用与小麦相同的碰撞箱
     private static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D),
@@ -97,8 +96,8 @@ public class SesameCropBlock extends CropBlock {
         return SHAPE_BY_AGE[state.getValue(this.getAgeProperty())];
     }
 
-    // 获取骨粉增加的年龄
+    // 骨粉实现
     protected int getBonemealAgeIncrease(Level level) {
-        return level.random.nextInt(3) + 1; // 骨粉可以增加1-3个生长阶段
+        return level.random.nextInt(3) + 1;
     }
 }

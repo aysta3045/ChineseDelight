@@ -6,7 +6,6 @@ import aysta3045.ChineseDelight.common.registry.ModBlockEntities;
 import aysta3045.ChineseDelight.common.registry.ModRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -16,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -105,7 +103,7 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
 
-        // 使用原版的方法掉落所有物品
+        // 掉落物品
         net.minecraft.world.Containers.dropContents(level, pos, inventory);
     }
 
@@ -136,7 +134,6 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
             FermentationRecipe currentRecipe = recipe.get();
             SimpleContainer inventory = getContainer(blockEntity);
 
-            // 获取匹配结果
             Optional<FermentationRecipe.MatchResult> matchResult = currentRecipe.getMatchResult(inventory);
 
             if (matchResult.isPresent()) {
@@ -198,18 +195,15 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
         var registryAccess = level.registryAccess();
         ItemStack output = recipe.getResultItem(registryAccess);
 
-        // 检查输出槽是否可以接收产物
         ItemStack outputSlot = blockEntity.itemHandler.getStackInSlot(10);
 
         if (outputSlot.isEmpty()) {
-            return true; // 输出槽为空，可以接收
+            return true;
         } else if (outputSlot.getItem() == output.getItem() &&
                 ItemStack.isSameItemSameTags(outputSlot, output)) {
-            // 输出槽有相同物品，检查是否可以堆叠
             return outputSlot.getCount() + output.getCount() <= outputSlot.getMaxStackSize();
         }
-
-        return false; // 输出槽有不同物品，无法接收
+        return false;
     }
 
     private static void craftItem(FermentationJarBlockEntity blockEntity) {
@@ -223,16 +217,13 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
         int outputCount = matchResult.outputCount;
         int containerCount = matchResult.containerCount;
 
-        // 输出数量不能超过容器数量
         outputCount = Math.min(outputCount, containerCount);
 
-        // 限制输出数量不超过配方的最大乘数
         int maxMultiplier = blockEntity.currentRecipe.getMaxMultiplier();
         if (outputCount > maxMultiplier) {
             outputCount = maxMultiplier;
         }
 
-        // 如果输出数量为0，不执行合成
         if (outputCount <= 0) {
             return;
         }
@@ -247,7 +238,6 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
             }
         }
 
-        // 消耗容器（消耗数量等于输出数量）
         blockEntity.itemHandler.extractItem(9, outputCount, false);
 
         // 设置输出
@@ -256,14 +246,13 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
             blockEntity.itemHandler.setStackInSlot(10, result);
         } else if (currentOutput.getItem() == result.getItem() &&
                 ItemStack.isSameItemSameTags(currentOutput, result)) {
-            // 相同物品，合并数量
+            // 堆叠
             int newCount = currentOutput.getCount() + result.getCount();
             int maxStackSize = currentOutput.getMaxStackSize();
             if (newCount <= maxStackSize) {
                 currentOutput.setCount(newCount);
                 blockEntity.itemHandler.setStackInSlot(10, currentOutput);
             } else {
-                // 如果超过最大堆叠，只添加部分
                 int canAdd = maxStackSize - currentOutput.getCount();
                 if (canAdd > 0) {
                     currentOutput.setCount(currentOutput.getCount() + canAdd);
@@ -278,7 +267,6 @@ public class FermentationJarBlockEntity extends BlockEntity implements MenuProvi
 
     private void resetProgress() {
         this.progress = 0;
-        // 重置进度时不重置maxProgress，保持当前配方的时间
         setChanged();
     }
 
