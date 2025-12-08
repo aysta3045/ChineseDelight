@@ -18,4 +18,12 @@ public class ModEntityTypes {
                     .sized(0.4F, 0.7F)
                     .clientTrackingRange(10)
                     .build("chinese_delight_duck"));
+
+    // 鸭蛋实体（投掷物）
+    public static final RegistryObject<EntityType<DuckEggEntity>> DUCK_EGG = ENTITY_TYPES.register("duck_egg",
+            () -> EntityType.Builder.<DuckEggEntity>of(DuckEggEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build("duck_egg"));
 }

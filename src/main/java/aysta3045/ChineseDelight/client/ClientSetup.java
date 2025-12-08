@@ -16,7 +16,7 @@ public class ClientSetup
 
         event.enqueueWork(() -> {
 
-            // 注册发酵罐屏幕
+            // 发酵罐屏幕
             MenuScreens.register(ModMenus.FERMENTATION_JAR_MENU.get(), FermentationJarScreen::new);
 
         });

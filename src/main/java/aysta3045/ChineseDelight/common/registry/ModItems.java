@@ -14,7 +14,6 @@ public class ModItems
 
 
 
-    // 方块
     // 牛油块
     public static final RegistryObject<Item> BEEF_TALLOW_BLOCK = ITEMS.register("beef_tallow_block",
             () -> new BlockItem(ModBlocks.BEEF_TALLOW_BLOCK.get(), new Item.Properties()));
@@ -27,9 +26,6 @@ public class ModItems
     public static final RegistryObject<Item> FERMENTATION_JAR = ITEMS.register("fermentation_jar",
             () -> new BlockItem(ModBlocks.FERMENTATION_JAR.get(), new Item.Properties()));
 
-
-
-    // 物品
     // 热干面
     public static final RegistryObject<Item> HOT_DRY_NOODLES = ITEMS.register("hot_dry_noodles",
             HotDryNoodlesItem::new);
@@ -84,10 +80,6 @@ public class ModItems
     public static final RegistryObject<Item> PICKLED_WHITE_RADISH_CHUNK = ITEMS.register("pickled_white_radish_chunk",
             PickledWhiteRadishChunkItem::new);
 
-
-
-
-    // 作物
     // 芝麻作物
     public static final RegistryObject<Item> SESAME = ITEMS.register("sesame",
             () -> new SesameItem(ModBlocks.SESAME_CROP.get(), new Item.Properties()));

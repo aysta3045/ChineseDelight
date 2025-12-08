@@ -178,4 +178,13 @@ public class ChineseDelightDuck extends Chicken {
 
         this.spawnAtLocation(ModItems.DUCK_FEATHER.get(), totalCount);
     }
+
+    public void setBaby(boolean baby) {
+        this.setAge(baby ? -24000 : 0);
+    }
+
+    public boolean isBaby() {
+        return this.getAge() < 0;
+    }
+
 }
