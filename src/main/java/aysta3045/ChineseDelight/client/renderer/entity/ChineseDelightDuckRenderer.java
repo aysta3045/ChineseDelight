@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ChineseDelightDuckRenderer extends MobRenderer<ChineseDelightDuck, ChineseDelightDuckModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ChineseDelight.MODID, "textures/entity/duck.png");
+    private static final ResourceLocation BABY_TEXTURE = new ResourceLocation(ChineseDelight.MODID, "textures/entity/duck_baby.png");
 
     public ChineseDelightDuckRenderer(EntityRendererProvider.Context context) {
         super(context, new ChineseDelightDuckModel(context.bakeLayer(ChineseDelightDuckModel.LAYER_LOCATION)), 0.3F);
@@ -17,13 +18,18 @@ public class ChineseDelightDuckRenderer extends MobRenderer<ChineseDelightDuck, 
 
     @Override
     public ResourceLocation getTextureLocation(ChineseDelightDuck entity) {
-        return TEXTURE;
+        return entity.isBaby() ? BABY_TEXTURE : TEXTURE;
     }
 
     @Override
     protected void scale(ChineseDelightDuck entity, PoseStack poseStack, float partialTickTime) {
-        float scale = entity.isBaby() ? 0.5F : 1.0F;
-        poseStack.scale(scale, scale, scale);
+        if (entity.isBaby()) {
+            float scale = 0.5F;
+            poseStack.scale(scale, scale, scale);
+        } else {
+            float scale = 1.0F;
+            poseStack.scale(scale, scale, scale);
+        }
 
         this.shadowRadius = entity.isBaby() ? 0.15F : 0.3F;
     }
