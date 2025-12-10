@@ -1,8 +1,8 @@
 package aysta3045.ChineseDelight.client;
 
 import aysta3045.ChineseDelight.ChineseDelight;
-import aysta3045.ChineseDelight.client.model.ChineseDelightDuckModel;
-import aysta3045.ChineseDelight.client.renderer.entity.ChineseDelightDuckRenderer;
+import aysta3045.ChineseDelight.client.model.DuckModel;
+import aysta3045.ChineseDelight.client.renderer.entity.DuckRenderer;
 import aysta3045.ChineseDelight.common.registry.ModEntityTypes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -14,11 +14,11 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(ModEntityTypes.CHINESE_DELIGHT_DUCK.get(), ChineseDelightDuckRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.CHINESE_DELIGHT_DUCK.get(), DuckRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(ChineseDelightDuckModel.LAYER_LOCATION, ChineseDelightDuckModel::createBodyLayer);
+        event.registerLayerDefinition(DuckModel.LAYER_LOCATION, DuckModel::createBodyLayer);
     }
 }

@@ -19,7 +19,7 @@ public class EntityRendererRegistry {
         event.enqueueWork(() -> {
 
             // 鸭实体渲染器
-            EntityRenderers.register(ModEntityTypes.CHINESE_DELIGHT_DUCK.get(), ChineseDelightDuckRenderer::new);
+            EntityRenderers.register(ModEntityTypes.CHINESE_DELIGHT_DUCK.get(), DuckRenderer::new);
 
             // 鸭蛋实体渲染器
             EntityRenderers.register(ModEntityTypes.DUCK_EGG.get(), ThrownItemRenderer::new);

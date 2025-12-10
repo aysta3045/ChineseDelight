@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class ChineseDelightDuckModel extends EntityModel<ChineseDelightDuck> {
+public class DuckModel extends EntityModel<ChineseDelightDuck> {
     public static final ModelLayerLocation LAYER_LOCATION =
             new ModelLayerLocation(new ResourceLocation(ChineseDelight.MODID, "chinese_delight_duck"), "main");
     public static final ModelLayerLocation BABY_LAYER_LOCATION =
@@ -26,11 +26,11 @@ public class ChineseDelightDuckModel extends EntityModel<ChineseDelightDuck> {
     private final ModelPart wing1;
     private final boolean isBaby;
 
-    public ChineseDelightDuckModel(ModelPart root) {
+    public DuckModel(ModelPart root) {
         this(root, false);
     }
 
-    public ChineseDelightDuckModel(ModelPart root, boolean isBaby) {
+    public DuckModel(ModelPart root, boolean isBaby) {
         this.isBaby = isBaby;
 
         if (isBaby) {
@@ -161,7 +161,7 @@ public class ChineseDelightDuckModel extends EntityModel<ChineseDelightDuck> {
         }
     }
 
-    public static ChineseDelightDuckModel createBabyModel(ModelPart root) {
-        return new ChineseDelightDuckModel(root, true);
+    public static DuckModel createBabyModel(ModelPart root) {
+        return new DuckModel(root, true);
     }
 }

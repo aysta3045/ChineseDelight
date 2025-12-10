@@ -1,19 +1,19 @@
 package aysta3045.ChineseDelight.client.renderer.entity;
 
 import aysta3045.ChineseDelight.ChineseDelight;
-import aysta3045.ChineseDelight.client.model.ChineseDelightDuckModel;
+import aysta3045.ChineseDelight.client.model.DuckModel;
 import aysta3045.ChineseDelight.common.entity.ChineseDelightDuck;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class ChineseDelightDuckRenderer extends MobRenderer<ChineseDelightDuck, ChineseDelightDuckModel> {
+public class DuckRenderer extends MobRenderer<ChineseDelightDuck, DuckModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ChineseDelight.MODID, "textures/entity/duck.png");
     private static final ResourceLocation BABY_TEXTURE = new ResourceLocation(ChineseDelight.MODID, "textures/entity/duck_baby.png");
 
-    public ChineseDelightDuckRenderer(EntityRendererProvider.Context context) {
-        super(context, new ChineseDelightDuckModel(context.bakeLayer(ChineseDelightDuckModel.LAYER_LOCATION)), 0.3F);
+    public DuckRenderer(EntityRendererProvider.Context context) {
+        super(context, new DuckModel(context.bakeLayer(DuckModel.LAYER_LOCATION)), 0.3F);
     }
 
     @Override
