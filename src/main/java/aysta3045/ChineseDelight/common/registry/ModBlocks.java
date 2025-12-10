@@ -29,26 +29,7 @@ public class ModBlocks {
 
 
 
-    //方块类
-    // 一捆芝麻穗
-    public static final RegistryObject<Block> SESAME_BALE = BLOCKS.register("sesame_bale",
-            () -> new SesameBaleBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_YELLOW)
-                    .strength(0.5f)
-                    .sound(SoundType.GRASS)
-                    .ignitedByLava() // 可以被岩浆点燃
-            ));
-
-    // 牛油块
-    public static final RegistryObject<Block> BEEF_TALLOW_BLOCK = BLOCKS.register("beef_tallow_block",
-            () -> new BeefTallowBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_YELLOW) // 地图颜色
-                    .strength(0.8f, 2.5f) // 硬度、爆炸抗性
-                    .friction(0.8f) // 摩擦力（比冰高，比普通方块略滑）
-                    .speedFactor(0.95f) // 移动速度因子（略慢）
-                    .sound(SoundType.SLIME_BLOCK)
-            ));
-
+    // 功能方块类
     // 发酵罐
     public static final RegistryObject<Block> FERMENTATION_JAR = BLOCKS.register("fermentation_jar",
             () -> new FermentationJarBlock(BlockBehaviour.Properties.of()
@@ -57,5 +38,27 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .noOcclusion()
                     .sound(SoundType.DECORATED_POT)
+            ));
+
+
+
+    // 纯方块类
+    // 一捆芝麻穗
+    public static final RegistryObject<Block> SESAME_BALE = BLOCKS.register("sesame_bale",
+            () -> new SesameBaleBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(0.5f)
+                    .sound(SoundType.GRASS)
+                    .ignitedByLava()
+            ));
+
+    // 牛油块
+    public static final RegistryObject<Block> BEEF_TALLOW_BLOCK = BLOCKS.register("beef_tallow_block",
+            () -> new BeefTallowBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(0.8f, 2.5f)
+                    .friction(0.8f)
+                    .speedFactor(0.95f)
+                    .sound(SoundType.SLIME_BLOCK)
             ));
 }

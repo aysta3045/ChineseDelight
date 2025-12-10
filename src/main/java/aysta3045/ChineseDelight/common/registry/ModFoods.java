@@ -5,8 +5,8 @@ import net.minecraft.world.food.FoodProperties;
 public class ModFoods {
     // 热干面
     public static final FoodProperties HOT_DRY_NOODLE = new FoodProperties.Builder()
-            .nutrition(6) // 饱食度
-            .saturationMod(8f) // 饱和度
+            .nutrition(6)
+            .saturationMod(8f)
             .build();
 
     // 生鸭肉

@@ -31,5 +31,12 @@ ordering="AFTER"
 side="BOTH"
 
 [[dependencies.chinesedelight]]
+modId = "crafttweaker"
+mandatory = false
+versionRange = "[14.0.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.chinesedelight]]
 modId = "mixinbootstrap"
 mandatory = false
