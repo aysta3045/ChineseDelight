@@ -14,21 +14,14 @@ public class ModItems
 
 
 
-    // 牛油块
-    public static final RegistryObject<Item> BEEF_TALLOW_BLOCK = ITEMS.register("beef_tallow_block",
-            () -> new BlockItem(ModBlocks.BEEF_TALLOW_BLOCK.get(), new Item.Properties()));
-
-    // 一捆芝麻穗
-    public static final RegistryObject<Item> SESAME_BALE = ITEMS.register("sesame_bale",
-            () -> new BlockItem(ModBlocks.SESAME_BALE.get(), new Item.Properties()));
-
-    // 发酵罐
-    public static final RegistryObject<Item> FERMENTATION_JAR = ITEMS.register("fermentation_jar",
-            () -> new BlockItem(ModBlocks.FERMENTATION_JAR.get(), new Item.Properties()));
-
+    // 物品
     // 热干面
     public static final RegistryObject<Item> HOT_DRY_NOODLES = ITEMS.register("hot_dry_noodles",
             HotDryNoodlesItem::new);
+
+    // 芝麻
+    public static final RegistryObject<Item> SESAME = ITEMS.register("sesame",
+            () -> new SesameItem(ModBlocks.SESAME_CROP.get(), new Item.Properties()));
 
     // 芝麻穗
     public static final RegistryObject<Item> SESAME_SPIKE = ITEMS.register("sesame_spike",
@@ -40,7 +33,7 @@ public class ModItems
 
     // 生鸭肉
     public static final RegistryObject<Item> DUCK_MEAT = ITEMS.register("duck_meat",
-            WhiteRadishItem::new);
+            DuckMeatItem::new);
 
     // 熟鸭肉
     public static final RegistryObject<Item> COOKED_DUCK_MEAT = ITEMS.register("cooked_duck_meat",
@@ -48,6 +41,10 @@ public class ModItems
 
     // 鸭毛
     public static final RegistryObject<Item> DUCK_FEATHER = ITEMS.register("duck_feather",
+            () -> new DuckFeatherItem(new Item.Properties()));
+
+    // 鸭蛋
+    public static final RegistryObject<Item> DUCK_EGG = ITEMS.register("duck_egg",
             () -> new DuckEggItem(new Item.Properties()));
 
     // 鸭刷怪蛋
@@ -56,13 +53,9 @@ public class ModItems
                     0xA0522D, 0xFFD700,
                     new Item.Properties()));
 
-    // 鸭蛋
-    public static final RegistryObject<Item> DUCK_EGG = ITEMS.register("duck_egg",
-            () -> new DuckEggItem(new Item.Properties()));
-
     // 玻璃罐
     public static final RegistryObject<Item> GLASS_JAR = ITEMS.register("glass_jar",
-            () -> new SesameJarItem(new Item.Properties()));
+            () -> new GlassJarItem(new Item.Properties()));
 
     // 芝麻罐
     public static final RegistryObject<Item> SESAME_JAR = ITEMS.register("sesame_jar",
@@ -80,8 +73,21 @@ public class ModItems
     public static final RegistryObject<Item> PICKLED_WHITE_RADISH_CHUNK = ITEMS.register("pickled_white_radish_chunk",
             PickledWhiteRadishChunkItem::new);
 
-    // 芝麻作物
-    public static final RegistryObject<Item> SESAME = ITEMS.register("sesame",
-            () -> new SesameItem(ModBlocks.SESAME_CROP.get(), new Item.Properties()));
+    // 米酒
+    public static final RegistryObject<Item> RICE_WINE = ITEMS.register("rice_wine",
+            RiceWineItem::new);
+
+    // 方块
+    // 牛油块
+    public static final RegistryObject<Item> BEEF_TALLOW_BLOCK = ITEMS.register("beef_tallow_block",
+            () -> new BlockItem(ModBlocks.BEEF_TALLOW_BLOCK.get(), new Item.Properties()));
+
+    // 芝麻穗捆
+    public static final RegistryObject<Item> SESAME_BALE = ITEMS.register("sesame_bale",
+            () -> new BlockItem(ModBlocks.SESAME_BALE.get(), new Item.Properties()));
+
+    // 发酵罐
+    public static final RegistryObject<Item> FERMENTATION_JAR = ITEMS.register("fermentation_jar",
+            () -> new BlockItem(ModBlocks.FERMENTATION_JAR.get(), new Item.Properties()));
 
 }

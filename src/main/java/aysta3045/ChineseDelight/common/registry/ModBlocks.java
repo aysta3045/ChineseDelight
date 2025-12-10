@@ -43,7 +43,7 @@ public class ModBlocks {
 
 
     // 纯方块类
-    // 一捆芝麻穗
+    // 芝麻穗捆
     public static final RegistryObject<Block> SESAME_BALE = BLOCKS.register("sesame_bale",
             () -> new SesameBaleBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_YELLOW)
