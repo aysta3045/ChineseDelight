@@ -103,7 +103,6 @@ public class ChineseDelightDuck extends Chicken {
 
     @Override
     public Chicken getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
-        // 确保返回的是鸭子实体而不是鸡
         return ModEntityTypes.CHINESE_DELIGHT_DUCK.get().create(level);
     }
 
@@ -111,12 +110,10 @@ public class ChineseDelightDuck extends Chicken {
     public void aiStep() {
         super.aiStep();
 
-        // 立即重置父类的eggTime，防止父类Chicken下鸡蛋
         if (this.eggTime < 10) {
             this.eggTime = this.random.nextInt(6000) + 6000;
         }
 
-        // 我们自己的下鸭蛋逻辑
         if (!this.level().isClientSide && this.isAlive() && !this.isBaby() && --this.duckEggTime <= 0) {
             this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
 
@@ -126,7 +123,6 @@ public class ChineseDelightDuck extends Chicken {
         }
     }
 
-    // 添加防止摔伤的方法
     @Override
     public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
         // 返回false表示不受到摔落伤害
@@ -137,41 +133,33 @@ public class ChineseDelightDuck extends Chicken {
     protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
 
-        // 掉落生鸭肉或熟鸭肉
         if (this.isOnFire()) {
             this.spawnAtLocation(ModItems.COOKED_DUCK_MEAT.get());
         } else {
             this.spawnAtLocation(ModItems.DUCK_MEAT.get());
         }
 
-        // 掉落鸭毛
         dropDuckFeathers(looting);
     }
 
     private void dropDuckFeathers(int looting) {
-        // 基础掉落数量
         int baseCount = 1;
 
-        // 随机额外掉落（25%概率多掉1个）
         if (this.random.nextFloat() < 0.25f) {
             baseCount++;
         }
 
-        // 抢夺附魔效果
         int lootingBonus = 0;
         if (looting > 0) {
             lootingBonus = this.random.nextInt(looting + 1);
         }
 
-        // 总掉落数量
         int totalCount = baseCount + lootingBonus;
 
-        // 确保至少掉落1个
         if (totalCount < 1) {
             totalCount = 1;
         }
 
-        // 限制最大掉落数量
         if (totalCount > 5) {
             totalCount = 5;
         }
